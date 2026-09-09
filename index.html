@@ -210,8 +210,9 @@ footer{margin-top:56px; padding-top:24px; border-top:1px solid rgba(120,140,180,
 function epitaph(t){
   var h=t.holderCount||0, mins=t.mins, vol=t.vol;
   if(h<=1) return "his only holder was the man who made him.";
-  if(mins<6) return "gone before the chart finished loading.";
-  if(vol<200) return "nobody came. not even the bots.";
+  if(vol<80) return "nobody came. not even the bots.";
+  if(mins<3) return "gone before the chart finished loading.";
+  if(vol<200) return "the bots looked, and the bots left.";
   if(h<=4) return "survived by " + h + " wallets, none of them speaking.";
   if(mins<20) return "lived " + mins + " minutes. long enough to hope.";
   if(vol<1200) return "the volume was mostly the dev, changing pockets.";
@@ -259,8 +260,11 @@ function norm(c){
           mins:Math.max(1,Math.round((Date.now()-born)/60000)),
           holderCount:c.holderCount||0, mcap:c.mcap||0, vol:vol, liq:c.liquidity||0};
 }
+/* 🔴 поток Jupiter recent отдаёт монеты возрастом 1-3 минуты - порог «от 4 минут»
+   обнулял кладбище. Мёртвой считаем по СОСТОЯНИЮ, а не по возрасту: капа не ушла
+   от стартовой, холдеров горстка, оборота почти нет. */
 function isDead(t){
-  return t.mins>=4 && (t.holderCount<=6 || t.vol<900) && t.mcap<9000;
+  return t.mcap < 12000 && (t.holderCount <= 8 || t.vol < 1500);
 }
 
 async function loadGraves(){
