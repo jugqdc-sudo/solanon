@@ -1,415 +1,356 @@
 <title>Solana General Hospital</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
 <style>
 :root{
-  --void:#05070C; --deep:#0A0F1A; --panel:#101725; --panel2:#161F31;
-  --line:#22304A; --line2:#33435F;
-  --ink:#E9F0FB; --ink2:#9FB0CA; --dim:#63758F;
-  --ecg:#14F195; --sol:#9945FF; --cyan:#00D1FF;
-  --bad:#FF3B5C; --gold:#FFC53D;
+  --void:#06080E; --panel:#111827; --panel2:#18202F; --line:#26304A; --line2:#3A4763;
+  --ink:#EDF2FB; --ink2:#A8B6D0; --dim:#6A7893;
+  --sol:#9945FF; --cy:#00D1FF; --gr:#14F195; --bad:#FF3B5C; --gold:#FFC53D;
 }
 *{box-sizing:border-box}
 body{margin:0; background:var(--void); color:var(--ink); overflow-x:hidden;
-  font-family:"Space Grotesk",system-ui,sans-serif; font-size:16px; line-height:1.5;
-  -webkit-font-smoothing:antialiased}
+  font-family:"Space Grotesk",system-ui,sans-serif; font-size:16px; line-height:1.5}
 body::before{content:""; position:fixed; inset:0; z-index:-2;
-  background:radial-gradient(ellipse 80% 55% at 50% 0%, #101E38 0%, #060A12 60%, #04060A 100%)}
-body::after{content:""; position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.4;
-  background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(20,241,149,.028) 2px 3px)}
+  background:radial-gradient(ellipse 90% 60% at 50% -5%, #1B2A52 0%, #0A0F1C 55%, #05070C 100%)}
+.wrap{max-width:760px; margin:0 auto; padding:0 16px 70px}
 
-.wrap{max-width:1000px; margin:0 auto; padding:0 16px 70px}
-
-/* ── шапка ── */
-header{display:flex; align-items:center; gap:14px; padding:20px 0 14px;
-  border-bottom:1px solid var(--line)}
-.cross{font-size:22px; color:var(--ecg); filter:drop-shadow(0 0 14px rgba(20,241,149,.8));
-  animation:flick 6s infinite}
-@keyframes flick{0%,95%,100%{opacity:1}96%{opacity:.3}97%{opacity:1}98%{opacity:.5}}
-.hname{font-family:Bungee,sans-serif; font-size:16px; letter-spacing:.02em; line-height:1.1}
-.hsub{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.2em;
-  text-transform:uppercase; color:var(--dim)}
-.hstat{margin-left:auto; display:flex; gap:18px; font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--dim)}
-.hstat b{display:block; color:var(--ink); font-size:15px; font-weight:600}
-
-/* ── монитор ── */
-.monitor{margin-top:18px; border:1px solid var(--line); border-radius:16px; overflow:hidden;
-  background:linear-gradient(180deg,var(--panel2),var(--panel)); position:relative;
-  box-shadow:0 0 60px -30px rgba(20,241,149,.5), 0 30px 70px -50px #000}
-.vitals{display:grid; grid-template-columns:repeat(3,1fr); border-bottom:1px solid var(--line)}
-.vital{padding:14px 18px; border-right:1px solid var(--line)}
-.vital:last-child{border-right:none}
-.vlabel{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.22em;
-  text-transform:uppercase; color:var(--dim)}
-.vval{font-family:Bungee,sans-serif; font-size:clamp(22px,4.6vw,32px); line-height:1.1; margin-top:5px;
-  font-variant-numeric:tabular-nums; transition:color .3s}
-.v-hr{color:var(--bad)} .v-pf{color:var(--cyan)} .v-sn{color:var(--ecg)}
-.vsub{font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--dim); margin-top:2px}
-canvas#ecg{display:block; width:100%; height:150px; background:rgba(4,8,14,.85)}
-
-/* ── искушение ── */
-.stage{padding:22px 20px 24px; position:relative; min-height:250px}
-.incoming{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.24em;
-  text-transform:uppercase; color:var(--dim); text-align:center; margin-bottom:14px}
-.temptation{max-width:520px; margin:0 auto; border:1px solid var(--line2); border-radius:16px;
-  background:linear-gradient(165deg,rgba(30,42,66,.9),rgba(16,23,37,.9)); padding:20px;
-  animation:slide .45s cubic-bezier(.2,1.3,.4,1)}
-@keyframes slide{from{opacity:0; transform:translateY(26px) scale(.96)}to{opacity:1; transform:none}}
-.tt{display:flex; align-items:center; gap:13px; margin-bottom:16px}
-.tico{width:52px; height:52px; border-radius:14px; flex:none; display:flex; align-items:center;
-  justify-content:center; font-size:26px; background:linear-gradient(150deg,var(--sol),var(--cyan));
-  box-shadow:0 0 26px -8px rgba(153,69,255,.9)}
-.tsym{font-family:Bungee,sans-serif; font-size:23px; line-height:1.1}
-.tage{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--dim)}
-.metrics{display:grid; grid-template-columns:repeat(auto-fit,minmax(88px,1fr)); gap:1px;
-  background:var(--line); border:1px solid var(--line); border-radius:11px; overflow:hidden; margin-bottom:16px}
-.metric{background:rgba(10,15,26,.9); padding:10px 11px}
-.mk{font-family:"IBM Plex Mono",monospace; font-size:9px; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--dim)}
-.mv{font-family:"IBM Plex Mono",monospace; font-size:15px; font-weight:600; margin-top:3px;
-  font-variant-numeric:tabular-nums}
-.acts{display:grid; grid-template-columns:1fr 1fr; gap:11px}
-button{font:inherit; font-weight:700; cursor:pointer; border:none; border-radius:12px;
-  padding:15px; font-size:16px; transition:transform .09s, box-shadow .2s, opacity .2s;
-  font-family:Bungee,sans-serif; letter-spacing:.02em}
-button:active{transform:translateY(2px)}
-button:focus-visible{outline:2px solid var(--ecg); outline-offset:3px}
-button:disabled{opacity:.4; cursor:not-allowed}
-.b-buy{background:linear-gradient(100deg,var(--sol),var(--bad)); color:#fff;
-  box-shadow:0 10px 34px -14px rgba(255,59,92,.9)}
-.b-skip{background:rgba(20,241,149,.1); color:var(--ecg); border:1px solid rgba(20,241,149,.4)}
-.b-ghost{background:rgba(255,255,255,.05); color:var(--ink2); border:1px solid var(--line2);
-  font-family:"Space Grotesk",sans-serif; font-weight:600; font-size:14px; padding:11px 18px}
-
-/* ── исход ── */
-.outcome{max-width:520px; margin:0 auto; text-align:center; animation:slide .4s ease-out}
-.oline{font-family:Bungee,sans-serif; font-size:clamp(26px,6vw,42px); line-height:1.05}
-.o-win{color:var(--ecg)} .o-lose{color:var(--bad)} .o-jack{color:var(--gold)}
-.odelta{font-family:"IBM Plex Mono",monospace; font-size:19px; margin-top:6px; font-variant-numeric:tabular-nums}
-.owhy{color:var(--ink2); font-size:15px; margin:14px auto 0; max-width:30em; min-height:44px}
-.owhy b{color:var(--ink)}
-
-/* ── лог ── */
-.log{margin-top:20px; border:1px solid var(--line); border-radius:14px; overflow:hidden}
-.log-h{padding:11px 16px; background:rgba(16,23,37,.8); border-bottom:1px solid var(--line);
-  font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.22em;
-  text-transform:uppercase; color:var(--dim); display:flex; justify-content:space-between}
-.log-b{max-height:186px; overflow-y:auto}
-.entry{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center;
-  padding:9px 16px; border-bottom:1px solid rgba(34,48,74,.5);
-  font-family:"IBM Plex Mono",monospace; font-size:12.5px}
-.entry:last-child{border-bottom:none}
-.entry .act{font-size:10px; letter-spacing:.1em; padding:2px 7px; border-radius:5px}
-.act.buy{background:rgba(255,59,92,.16); color:var(--bad)}
-.act.skip{background:rgba(20,241,149,.14); color:var(--ecg)}
-.entry .d{text-align:right; font-variant-numeric:tabular-nums}
-.d.plus{color:var(--ecg)} .d.minus{color:var(--bad)}
-.empty{padding:26px; text-align:center; color:var(--dim); font-size:14px}
-
-/* ── ранг ── */
-.rank{margin-top:20px; display:grid; grid-template-columns:1fr auto; gap:16px; align-items:center;
-  border:1px solid var(--line); border-radius:16px; padding:18px 20px;
-  background:linear-gradient(100deg,rgba(153,69,255,.1),rgba(20,241,149,.06))}
-.rname{font-family:Bungee,sans-serif; font-size:clamp(20px,4.4vw,28px); line-height:1.1;
-  background:linear-gradient(100deg,var(--sol),var(--cyan),var(--ecg));
+header{text-align:center; padding:36px 0 20px}
+.cross{font-size:26px; color:var(--gr); filter:drop-shadow(0 0 16px rgba(20,241,149,.8))}
+h1{font-family:Bungee,sans-serif; font-weight:400; font-size:clamp(26px,5.6vw,44px); margin:10px 0 0;
+  background:linear-gradient(100deg,var(--gr),var(--cy) 50%,var(--sol));
   -webkit-background-clip:text; background-clip:text; color:transparent}
-.rwhy{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--dim); margin-top:5px}
-.rbar{height:6px; border-radius:99px; background:rgba(255,255,255,.07); overflow:hidden; margin-top:11px}
-.rbar i{display:block; height:100%; border-radius:99px; width:0%;
-  background:linear-gradient(90deg,var(--sol),var(--ecg)); transition:width .6s cubic-bezier(.2,1,.3,1)}
+.est{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.24em;
+  text-transform:uppercase; color:var(--dim); margin-top:10px}
 
+/* выбор теста */
+.menu{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:26px}
+@media(max-width:600px){ .menu{grid-template-columns:1fr} }
+.tcard{position:relative; text-align:left; cursor:pointer; border-radius:18px; padding:22px;
+  border:1px solid var(--line); background:linear-gradient(165deg,var(--panel2),var(--panel));
+  transition:transform .18s, box-shadow .18s, border-color .18s}
+.tcard:hover{transform:translateY(-4px); border-color:var(--gr);
+  box-shadow:0 20px 46px -30px #000, 0 0 34px -14px rgba(20,241,149,.6)}
+.tcard .ico{font-size:34px}
+.tcard .tt{font-family:Bungee,sans-serif; font-size:19px; margin:10px 0 5px; line-height:1.15}
+.tcard .td{font-size:14px; color:var(--ink2)}
+.tcard .meta{font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--dim); margin-top:12px}
+
+/* тест */
+.panel{border:1px solid var(--line); border-radius:18px; padding:24px;
+  background:linear-gradient(180deg,var(--panel2),var(--panel)); margin-top:22px}
+.qnum{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--dim)}
+.qtext{font-family:Bungee,sans-serif; font-size:clamp(19px,3.8vw,25px); margin:10px 0 20px; line-height:1.25}
+.opts{display:flex; flex-direction:column; gap:10px}
+.opt{text-align:left; cursor:pointer; font:inherit; font-size:15.5px; font-weight:500; color:var(--ink);
+  background:rgba(255,255,255,.035); border:1px solid var(--line2); border-radius:13px; padding:15px 17px;
+  transition:transform .1s, border-color .15s, background .15s}
+.opt:hover{border-color:var(--gr); background:rgba(20,241,149,.08); transform:translateX(4px)}
+.opt:active{transform:translateX(4px) scale(.99)}
+.pbar{height:6px; border-radius:99px; background:rgba(255,255,255,.07); overflow:hidden; margin-top:18px}
+.pbar i{display:block; height:100%; border-radius:99px; width:0%;
+  background:linear-gradient(90deg,var(--sol),var(--gr)); transition:width .45s cubic-bezier(.2,1,.3,1)}
+
+/* результат */
+.res{text-align:center; animation:pop .5s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{opacity:0; transform:scale(.9)}to{opacity:1; transform:none}}
+.remo{font-size:76px; line-height:1; filter:drop-shadow(0 10px 24px rgba(0,0,0,.6))}
+.rname{font-family:Bungee,sans-serif; font-size:clamp(28px,7vw,48px); line-height:1.05; margin:12px 0 6px;
+  background:linear-gradient(100deg,var(--gr),var(--cy),var(--sol));
+  -webkit-background-clip:text; background-clip:text; color:transparent}
+.rtag{font-family:"IBM Plex Mono",monospace; font-size:11.5px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--dim)}
+.rdesc{color:var(--ink2); font-size:16px; margin:16px auto 0; max-width:32em}
+.rstats{display:grid; grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); gap:1px; margin-top:22px;
+  background:var(--line); border:1px solid var(--line); border-radius:14px; overflow:hidden}
+.rstats div{background:rgba(12,17,29,.9); padding:13px}
+.rstats b{display:block; font-family:Bungee,sans-serif; font-size:20px; color:var(--gr)}
+.rstats span{display:block; font-family:"IBM Plex Mono",monospace; font-size:10px;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--dim); margin-top:4px}
+
+/* dead or alive */
+.coin{border:1px solid var(--line2); border-radius:16px; padding:20px; text-align:center;
+  background:rgba(10,15,26,.7); animation:pop .4s ease-out}
+.csym{font-family:Bungee,sans-serif; font-size:27px}
+.cname{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--dim); margin-top:3px}
+.cmet{display:grid; grid-template-columns:repeat(auto-fit,minmax(84px,1fr)); gap:1px; margin-top:16px;
+  background:var(--line); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.cmet div{background:rgba(12,17,29,.95); padding:10px}
+.cmet b{display:block; font-family:"IBM Plex Mono",monospace; font-size:15px; font-variant-numeric:tabular-nums}
+.cmet span{display:block; font-family:"IBM Plex Mono",monospace; font-size:9px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--dim); margin-top:3px}
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:11px; margin-top:18px}
+.big{font-family:Bungee,sans-serif; font-size:17px; padding:16px; border-radius:13px; border:none;
+  cursor:pointer; transition:transform .09s}
+.big:active{transform:translateY(2px)}
+.b-dead{background:linear-gradient(100deg,#5A1020,var(--bad)); color:#fff}
+.b-alive{background:linear-gradient(100deg,#0C4A32,var(--gr)); color:#04120C}
+.verdict{text-align:center; margin-top:18px; animation:pop .4s ease-out}
+.vbig{font-family:Bungee,sans-serif; font-size:30px}
+.v-ok{color:var(--gr)} .v-no{color:var(--bad)}
+.vwhy{color:var(--ink2); font-size:14.5px; margin-top:8px}
+
+.row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:22px}
+button.act{font:inherit; font-family:Bungee,sans-serif; font-size:15px; cursor:pointer; border:none;
+  border-radius:12px; padding:14px 24px; transition:transform .1s}
+button.act:active{transform:translateY(2px)}
+.b1{background:linear-gradient(100deg,var(--sol),var(--cy),var(--gr)); background-size:200% auto;
+  color:#06080E; animation:sh 4s linear infinite}
+@keyframes sh{0%{background-position:0%}100%{background-position:200%}}
+.b2{background:rgba(255,255,255,.05); color:var(--ink2); border:1px solid var(--line2);
+  font-family:"Space Grotesk",sans-serif; font-weight:600}
 #fx{position:fixed; inset:0; pointer-events:none; z-index:60}
-.flash{position:fixed; inset:0; pointer-events:none; z-index:55; opacity:0}
-.flash.on{animation:fl .5s ease-out}
-@keyframes fl{0%{opacity:.5}100%{opacity:0}}
-
-.foot{margin-top:34px; padding-top:18px; border-top:1px solid var(--line);
-  text-align:center; font-size:12px; color:var(--dim); line-height:1.9}
-.foot a{color:var(--ecg)}
-.ca{display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap; margin-top:14px}
+.foot{margin-top:36px; padding-top:18px; border-top:1px solid var(--line); text-align:center;
+  font-size:12px; color:var(--dim); line-height:1.9}
+.foot a{color:var(--gr)}
+.ca{display:flex; gap:10px; justify-content:center; align-items:center; flex-wrap:wrap; margin-top:12px}
 .ca code{font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:var(--ink2); word-break:break-all}
-@media(max-width:560px){ .vitals{grid-template-columns:1fr 1fr} .vital:nth-child(3){grid-column:1/-1; border-right:none; border-top:1px solid var(--line)} }
+.hide{display:none}
 @media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
 </style>
 
 <canvas id="fx"></canvas>
-<div class="flash" id="flash"></div>
-
 <div class="wrap">
   <header>
-    <span class="cross">✚</span>
-    <div>
-      <div class="hname">SOLANA GENERAL</div>
-      <div class="hsub">intensive care · bed 12</div>
-    </div>
-    <div class="hstat">
-      <span>seen<b id="h-seen">0</b></span>
-      <span>accuracy<b id="h-acc">—</b></span>
-      <span>best streak<b id="h-str">0</b></span>
-    </div>
+    <div class="cross">✚</div>
+    <h1>SOLANA GENERAL HOSPITAL</h1>
+    <p class="est">diagnostics department · walk-ins welcome</p>
   </header>
 
-  <div class="monitor">
-    <div class="vitals">
-      <div class="vital"><div class="vlabel">Heart rate</div>
-        <div class="vval v-hr" id="v-hr">72</div><div class="vsub">bpm · resting</div></div>
-      <div class="vital"><div class="vlabel">Portfolio</div>
-        <div class="vval v-pf" id="v-pf">10.00</div><div class="vsub" id="v-pfs">SOL · admitted with 10</div></div>
-      <div class="vital"><div class="vlabel">Sanity</div>
-        <div class="vval v-sn" id="v-sn">100</div><div class="vsub" id="v-sns">%· stable</div></div>
+  <!-- меню -->
+  <div id="menu">
+    <div class="menu">
+      <button class="tcard" data-t="degen">
+        <div class="ico">🧠</div>
+        <div class="tt">WHAT KIND OF DEGEN ARE YOU</div>
+        <div class="td">Eight questions. One diagnosis. It will be accurate and you will not like it.</div>
+        <div class="meta">8 questions · 6 possible diagnoses</div>
+      </button>
+      <button class="tcard" data-t="doa">
+        <div class="ico">💀</div>
+        <div class="tt">DEAD OR ALIVE</div>
+        <div class="td">Real coins, born minutes ago. Look at the numbers and call it. Most people score under 50%.</div>
+        <div class="meta">live from the chain · endless</div>
+      </button>
     </div>
-    <canvas id="ecg" width="1600" height="300"></canvas>
-    <div class="stage" id="stage">
-      <p class="incoming" id="incoming">— the drip is loading a live coin from the chain —</p>
-      <div id="slot"></div>
+    <div class="panel" style="text-align:center">
+      <div class="rstats" style="margin-top:0">
+        <div><b id="m-taken">0</b><span>tests taken</span></div>
+        <div><b id="m-doa">—</b><span>dead or alive accuracy</span></div>
+        <div><b id="m-diag">none</b><span>last diagnosis</span></div>
+      </div>
     </div>
   </div>
 
-  <div class="rank">
-    <div>
-      <div class="rname" id="r-name">FRESH MEAT</div>
-      <div class="rwhy" id="r-why">no calls made yet. the doctors are watching.</div>
-      <div class="rbar"><i id="r-bar"></i></div>
-    </div>
-    <button class="b-ghost" id="reset">reset chart</button>
-  </div>
-
-  <div class="log">
-    <div class="log-h"><span>patient decision log</span><span id="log-n">0 entries</span></div>
-    <div class="log-b" id="log"><div class="empty">Nothing yet. The first coin is on its way.</div></div>
-  </div>
+  <!-- тест -->
+  <div id="quiz" class="hide"></div>
 
   <div class="foot">
-    Every coin shown here is real and was born on Solana minutes ago. Outcomes are computed from its actual on-chain metrics, not from a random number.<br>
-    Crypto trading addiction is real: <a href="https://www.castlecraig.co.uk/addictions-we-treat/behaviours/cryptocurrency-trading/" target="_blank" rel="noopener">Castle Craig Hospital</a> ·
+    Crypto trading addiction is real and treated by real hospitals:
+    <a href="https://www.castlecraig.co.uk/addictions-we-treat/behaviours/cryptocurrency-trading/" target="_blank" rel="noopener">Castle Craig</a> ·
     <a href="https://www.ifa.com/articles/what_science_crypto_trading_addiction_reveals" target="_blank" rel="noopener">26.3% of 596 traders met the clinical criteria</a>
-    <div class="ca"><code id="ca">CA появится здесь после запуска</code><button class="b-ghost" id="copyca">copy</button></div>
+    <div class="ca"><code id="ca">CA появится здесь после запуска</code><button class="b2 act" id="copyca" style="font-size:13px;padding:9px 16px">copy</button></div>
   </div>
 </div>
 
 <script>
-/* ═════ состояние ═════ */
-var KEY="sgh_icu";
-var S = load() || { sol:10, sanity:100, seen:0, right:0, streak:0, best:0, log:[] };
-function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||"null"); }catch(e){ return null; } }
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
-
-/* ═════ ЭКГ ═════ */
-var ecg=document.getElementById("ecg"), ex=ecg.getContext("2d");
-var EW=ecg.width, EH=ecg.height, trace=[], head=0, bpm=72, targetBpm=72, beatPhase=0;
-for(var i=0;i<EW;i++) trace.push(EH/2);
-function beatShape(p){
-  /* p 0..1 внутри одного удара - P, QRS, T */
-  if(p<0.10) return Math.sin(p/0.10*Math.PI)*10;
-  if(p<0.16) return -14;
-  if(p<0.22) return 118;
-  if(p<0.28) return -46;
-  if(p<0.50) return Math.sin((p-0.28)/0.22*Math.PI)*26;
-  return 0;
-}
-function drawEcg(){
-  var speed=Math.max(2, Math.round(bpm/16));
-  for(var k=0;k<speed;k++){
-    beatPhase += (bpm/60) / 60 / (EW/ (bpm/60*60) ) * 1;
-    var perBeat = Math.max(40, Math.round(3600/bpm));
-    var p = (head % perBeat) / perBeat;
-    var noise=(Math.random()-0.5)*3.2*(bpm>110?2.4:1);
-    trace[head % EW] = EH/2 - beatShape(p)*(EH/300) - noise;
-    head++;
-  }
-  ex.clearRect(0,0,EW,EH);
-  ex.strokeStyle="rgba(30,48,74,.55)"; ex.lineWidth=1;
-  for(var g=1;g<4;g++){ var y=EH*g/4; ex.beginPath(); ex.moveTo(0,y); ex.lineTo(EW,y); ex.stroke(); }
-  var col = bpm>115 ? "#FF3B5C" : bpm>92 ? "#FFC53D" : "#14F195";
-  ex.beginPath();
-  for(var x=0;x<EW;x++){
-    var idx=(head+x)%EW, y=trace[idx];
-    x?ex.lineTo(x,y):ex.moveTo(x,y);
-  }
-  ex.strokeStyle=col; ex.lineWidth=3.2; ex.lineJoin="round";
-  ex.shadowColor=col; ex.shadowBlur=16; ex.stroke(); ex.shadowBlur=0;
-  bpm += (targetBpm-bpm)*0.035;
-  targetBpm += (72-targetBpm)*0.004;
-  document.getElementById("v-hr").textContent=Math.round(bpm);
-  requestAnimationFrame(drawEcg);
-}
-drawEcg();
-
-/* ═════ частицы ═════ */
+/* ── конфетти ── */
 var fx=document.getElementById("fx"), fc=fx.getContext("2d"), P=[];
-function sizeFx(){ fx.width=innerWidth; fx.height=innerHeight; } sizeFx(); addEventListener("resize",sizeFx);
-function burst(n,cols){
-  for(var i=0;i<n;i++) P.push({x:innerWidth/2,y:innerHeight/2.4,
-    vx:(Math.random()-.5)*16,vy:(Math.random()-.95)*14,s:4+Math.random()*7,
-    c:cols[Math.floor(Math.random()*cols.length)],l:1});
-}
-(function pt(){ fc.clearRect(0,0,fx.width,fx.height); P=P.filter(function(p){return p.l>0;});
-  P.forEach(function(p){ p.x+=p.vx; p.y+=p.vy; p.vy+=.45; p.l-=.012;
+function sz(){ fx.width=innerWidth; fx.height=innerHeight; } sz(); addEventListener("resize",sz);
+function burst(n){ var c=["#9945FF","#14F195","#00D1FF","#FFC53D","#FF3B5C"];
+  for(var i=0;i<n;i++) P.push({x:innerWidth/2,y:innerHeight/2.6,vx:(Math.random()-.5)*15,
+    vy:(Math.random()-.95)*13,s:4+Math.random()*6,c:c[Math.floor(Math.random()*c.length)],l:1}); }
+(function t(){ fc.clearRect(0,0,fx.width,fx.height); P=P.filter(function(p){return p.l>0;});
+  P.forEach(function(p){ p.x+=p.vx;p.y+=p.vy;p.vy+=.44;p.l-=.012;
     fc.globalAlpha=Math.max(0,p.l); fc.fillStyle=p.c; fc.fillRect(p.x,p.y,p.s,p.s*1.5); });
-  fc.globalAlpha=1; requestAnimationFrame(pt); })();
-function flash(c){ var f=document.getElementById("flash");
-  f.style.background="radial-gradient(circle at 50% 45%,"+c+",transparent 65%)";
-  f.classList.remove("on"); void f.offsetWidth; f.classList.add("on"); }
+  fc.globalAlpha=1; requestAnimationFrame(t); })();
 
-/* ═════ твин чисел ═════ */
-function tween(el,from,to,dec,suffix){
-  var t0=performance.now(), d=520;
-  (function st(now){ var k=Math.min(1,(now-t0)/d), e=1-Math.pow(1-k,3);
-    el.textContent=(from+(to-from)*e).toFixed(dec)+(suffix||"");
-    if(k<1) requestAnimationFrame(st); })(t0);
+/* ── память ── */
+var K="sgh_tests";
+var M = (function(){ try{ return JSON.parse(localStorage.getItem(K)||"null"); }catch(e){ return null; } })()
+        || { taken:0, doaSeen:0, doaRight:0, lastDiag:"none" };
+function saveM(){ try{ localStorage.setItem(K, JSON.stringify(M)); }catch(e){} }
+function renderMenu(){
+  document.getElementById("m-taken").textContent=M.taken;
+  document.getElementById("m-doa").textContent = M.doaSeen ? Math.round(M.doaRight/M.doaSeen*100)+"%" : "—";
+  document.getElementById("m-diag").textContent = M.lastDiag;
 }
 
-/* ═════ живые монеты ═════ */
+/* ═══ ТЕСТ 1: какой ты дегенерат ═══ */
+var Q=[
+ ["It is 4am. What are you doing?",
+  [["Asleep like a normal person","ghost"],["Checking a chart","bag"],["Buying something that just launched","jeet"],
+   ["Watching a wallet I track","sniper"],["Deploying","dev"]]],
+ ["A coin you sold is now up 40x. Your move?",
+  [["Block the ticker from my life","ghost"],["Stare at the chart for an hour","bag"],
+   ["Buy back in immediately","jeet"],["Find who bought my bag","sniper"],["Launch a copy of it","dev"]]],
+ ["Your wallet right now:",
+  [["One or two positions","ghost"],["Forty tickers, all red","bag"],["Empty, I flipped everything","jeet"],
+   ["Eleven wallets, actually","sniper"],["Fresh, funded from an exchange","dev"]]],
+ ["Someone posts a coin with 3 holders. You:",
+  [["Scroll past","ghost"],["Add it to a watchlist I never open","bag"],["Ape 0.5 SOL","jeet"],
+   ["Check the dev wallet history","sniper"],["Note the narrative for later","dev"]]],
+ ["How do you feel about the word 'bundle'?",
+  [["No idea what that means","ghost"],["It is why I lost money","bag"],["It is why I sell in 4 seconds","jeet"],
+   ["It is how I read a launch","sniper"],["It is a Tuesday","dev"]]],
+ ["Your best trade ever was:",
+  [["Not trading that week","ghost"],["Up 300%, I did not sell","bag"],["Up 20%, out in 9 seconds","jeet"],
+   ["Block zero, obviously","sniper"],["The one where I was the seller","dev"]]],
+ ["What is your relationship with the phrase 'it's not gambling'?",
+  [["I have never said it","ghost"],["I said it to my partner","bag"],["I said it today","jeet"],
+   ["I say it about other people","sniper"],["I say it to my buyers","dev"]]],
+ ["Final question. Why are you here?",
+  [["A friend sent the link","ghost"],["I recognised myself in the title","bag"],
+   ["I am waiting for a chart to load in another tab","jeet"],["Research","sniper"],["Competitive analysis","dev"]]]
+];
+var TYPES={
+ ghost:{e:"👻",n:"THE GHOST",t:"rare · genuinely fine",
+   d:"You watch from a distance and sleep at night. Statistically you outperform everyone else on this page by doing nothing. Nobody believes you exist."},
+ bag:{e:"🎒",n:"THE BAGHOLDER",t:"most common diagnosis",
+   d:"You buy conviction and hold it into the ground. Your portfolio is a museum of narratives that were correct for about eleven minutes."},
+ jeet:{e:"🏃",n:"THE JEET",t:"chronic · untreatable",
+   d:"In and out before the chart renders. You have sold nine 100x coins for a 12% gain and you will do it again tonight."},
+ sniper:{e:"🎯",n:"THE SNIPER",t:"cold blooded",
+   d:"You read wallets, not narratives. You know what block zero means and you have opinions about Jito. The market fears you slightly."},
+ dev:{e:"🧑‍🔬",n:"THE DEV",t:"the other side of the trade",
+   d:"You are not a patient here, you are the reason there are patients here. Your wallet has a history and every sniper has seen it."},
+ tourist:{e:"🧳",n:"THE TOURIST",t:"arrived by accident",
+   d:"You gave answers from five different people. You do not know what you are yet, which is the most dangerous stage."}
+};
+
+function runDegen(){
+  var i=0, tally={};
+  function step(){
+    var q=document.getElementById("quiz");
+    if(i>=Q.length){
+      var best="tourist", max=0, spread=0;
+      for(var k in tally){ spread++; if(tally[k]>max){ max=tally[k]; best=k; } }
+      if(max<3 && spread>=4) best="tourist";
+      var T=TYPES[best];
+      M.taken++; M.lastDiag=T.n; saveM(); burst(120);
+      q.innerHTML='<div class="panel res">'+
+        '<div class="remo">'+T.e+'</div>'+
+        '<div class="rname">'+T.n+'</div>'+
+        '<div class="rtag">'+T.t+'</div>'+
+        '<p class="rdesc">'+T.d+'</p>'+
+        '<div class="rstats">'+
+          '<div><b>'+max+'/8</b><span>answers matched</span></div>'+
+          '<div><b>'+Object.keys(tally).length+'</b><span>types in you</span></div>'+
+          '<div><b>26.3%</b><span>of traders are clinically addicted</span></div>'+
+        '</div>'+
+        '<div class="row">'+
+          '<button class="act b1" id="post">POST DIAGNOSIS</button>'+
+          '<button class="act b2" id="again">Take it again</button>'+
+          '<button class="act b2" id="home">← other tests</button>'+
+        '</div></div>';
+      document.getElementById("post").onclick=function(){
+        var txt="I was diagnosed at Solana General Hospital.\n\n"+T.e+" "+T.n+"\n\""+T.d.split(".")[0]+".\"\n\nGet your diagnosis:";
+        open("https://twitter.com/intent/tweet?text="+encodeURIComponent(txt),"_blank","noopener");
+      };
+      document.getElementById("again").onclick=function(){ runDegen(); };
+      document.getElementById("home").onclick=home;
+      renderMenu(); return;
+    }
+    var qq=Q[i];
+    q.innerHTML='<div class="panel">'+
+      '<div class="qnum">question '+(i+1)+' of '+Q.length+'</div>'+
+      '<div class="qtext">'+qq[0]+'</div><div class="opts" id="o"></div>'+
+      '<div class="pbar"><i style="width:'+(i/Q.length*100)+'%"></i></div></div>';
+    var o=document.getElementById("o");
+    qq[1].forEach(function(a){
+      var b=document.createElement("button"); b.className="opt"; b.textContent=a[0];
+      b.onclick=function(){ tally[a[1]]=(tally[a[1]]||0)+1; i++; step(); };
+      o.appendChild(b);
+    });
+  }
+  show(); step();
+}
+
+/* ═══ ТЕСТ 2: dead or alive ═══ */
 var pool=[], used={};
 async function refill(){
   try{
-    var r=await fetch("https://lite-api.jup.ag/tokens/v2/recent");
-    var j=await r.json();
-    var list=(Array.isArray(j)?j:(j.tokens||[])).map(function(c){
-      var fp=(c.firstPool||{}).createdAt, born=fp?Date.parse(fp):Date.now();
-      var s=c.stats24h||{};
-      return { id:c.id, sym:(c.symbol||"???").slice(0,12), name:c.name||"",
-        mins:Math.max(1,Math.round((Date.now()-born)/60000)),
-        holders:c.holderCount||0, mcap:c.mcap||0,
-        liq:c.liquidity||0, vol:(s.buyVolume||0)+(s.sellVolume||0),
-        org:c.organicScore||0 };
+    var r=await fetch("https://lite-api.jup.ag/tokens/v2/recent"), j=await r.json();
+    var l=(Array.isArray(j)?j:(j.tokens||[])).map(function(c){
+      var fp=(c.firstPool||{}).createdAt, born=fp?Date.parse(fp):Date.now(), s=c.stats24h||{};
+      return {id:c.id,sym:(c.symbol||"???").slice(0,12),name:(c.name||"").slice(0,30),
+        mins:Math.max(1,Math.round((Date.now()-born)/60000)),h:c.holderCount||0,
+        mc:c.mcap||0,liq:c.liquidity||0,vol:(s.buyVolume||0)+(s.sellVolume||0),org:c.organicScore||0};
     }).filter(function(t){ return !used[t.id]; });
-    pool=pool.concat(list);
+    pool=pool.concat(l);
   }catch(e){}
 }
-/* 🔴 исход считаем из НАСТОЯЩИХ метрик монеты, не из рандома */
-function verdict(t){
-  var score=0;
-  if(t.holders>=40) score+=2; else if(t.holders>=15) score+=1; else if(t.holders<=3) score-=2;
-  if(t.vol>=20000) score+=2; else if(t.vol>=4000) score+=1; else if(t.vol<600) score-=2;
-  if(t.liq>=15000) score+=1; else if(t.liq<1200) score-=1;
-  if(t.org>=25) score+=2; else if(t.org<=1) score-=1;
-  if(t.mcap>=25000) score+=1;
-  return score;
+function alive(t){
+  var s=0;
+  if(t.h>=40)s+=2; else if(t.h>=15)s+=1; else if(t.h<=3)s-=2;
+  if(t.vol>=20000)s+=2; else if(t.vol>=4000)s+=1; else if(t.vol<600)s-=2;
+  if(t.liq>=15000)s+=1; else if(t.liq<1200)s-=1;
+  if(t.org>=25)s+=2; else if(t.org<=1)s-=1;
+  if(t.mc>=25000)s+=1;
+  return s>0;
 }
-function why(t,sc){
-  if(sc<=-3) return "<b>"+t.holders+" holders, $"+Math.round(t.vol).toLocaleString()+" of volume.</b> Nobody was there. This one was already dead when it reached your screen.";
-  if(sc<0)  return "Thin liquidity and almost no trading. The bots looked at it and moved on.";
-  if(sc===0) return "Genuinely borderline. Half of these go to zero and half do nothing at all.";
-  if(sc<=2) return "<b>"+t.holders+" holders</b> and real volume. Someone other than the dev was buying.";
-  return "<b>Organic score "+Math.round(t.org)+", "+t.holders+" holders, $"+Math.round(t.vol).toLocaleString()+" volume.</b> This one was actually alive.";
-}
-
-/* ═════ раунд ═════ */
-var current=null, busy=false;
-async function nextCoin(){
-  if(pool.length<3) await refill();
-  var slot=document.getElementById("slot");
-  if(!pool.length){ slot.innerHTML='<p class="empty">The chain is quiet. Waiting for a body…</p>';
-    setTimeout(nextCoin,4000); return; }
-  current=pool.shift(); used[current.id]=1;
-  document.getElementById("incoming").textContent="— live from the chain, born "+current.mins+" min ago —";
-  var t=current;
-  slot.innerHTML=
-   '<div class="temptation">'+
-    '<div class="tt"><div class="tico">🪙</div>'+
-      '<div><div class="tsym">$'+t.sym+'</div>'+
-      '<div class="tage">'+(t.name||"unnamed").slice(0,34)+' · '+t.mins+' min old</div></div></div>'+
-    '<div class="metrics">'+
-      '<div class="metric"><div class="mk">holders</div><div class="mv">'+t.holders+'</div></div>'+
-      '<div class="metric"><div class="mk">mcap</div><div class="mv">$'+Math.round(t.mcap).toLocaleString()+'</div></div>'+
-      '<div class="metric"><div class="mk">liquidity</div><div class="mv">$'+Math.round(t.liq).toLocaleString()+'</div></div>'+
-      '<div class="metric"><div class="mk">volume</div><div class="mv">$'+Math.round(t.vol).toLocaleString()+'</div></div>'+
-    '</div>'+
-    '<div class="acts"><button class="b-buy" id="buy">APE IN</button>'+
-    '<button class="b-skip" id="skip">WALK AWAY</button></div>'+
-   '</div>';
-  document.getElementById("buy").onclick=function(){ decide(true); };
-  document.getElementById("skip").onclick=function(){ decide(false); };
-  busy=false;
-}
-
-function decide(bought){
-  if(busy||!current) return; busy=true;
-  var t=current, sc=verdict(t), good=sc>0;
-  var correct = bought ? good : !good;
-  var delta=0, headline, cls;
-
-  if(bought){
-    if(sc>=3 && Math.random()<0.25){ delta=+(0.6+Math.random()*2.4); headline="IT ACTUALLY RAN"; cls="o-jack";
-      targetBpm=148; flash("rgba(255,197,61,.5)"); burst(160,["#FFC53D","#14F195","#00D1FF","#9945FF"]); }
-    else if(good){ delta=+(0.08+Math.random()*0.5); headline="YOU GOT OUT GREEN"; cls="o-win";
-      targetBpm=124; flash("rgba(20,241,149,.35)"); burst(45,["#14F195","#00D1FF"]); }
-    else { delta=-(0.15+Math.random()*0.55); headline="RUGGED"; cls="o-lose";
-      targetBpm=158; flash("rgba(255,59,92,.4)"); }
-    S.sanity=Math.max(0,S.sanity-(good?1:4));
-  } else {
-    if(good){ delta=0; headline="YOU MISSED ONE"; cls="o-lose"; targetBpm=96; }
-    else { delta=0; headline="NOTHING HAPPENED. GOOD."; cls="o-win"; targetBpm=68;
-      flash("rgba(20,241,149,.16)"); }
-    S.sanity=Math.min(100,S.sanity+(good?0:2));
+async function runDoa(){
+  show();
+  var q=document.getElementById("quiz");
+  if(pool.length<2) { q.innerHTML='<div class="panel res"><div class="remo">⏳</div><p class="rdesc">Pulling fresh bodies from the chain…</p></div>'; await refill(); }
+  if(!pool.length){ q.innerHTML='<div class="panel res"><div class="remo">📡</div><p class="rdesc">The chain is not answering. Try again in a moment.</p><div class="row"><button class="act b2" id="home">← back</button></div></div>';
+    document.getElementById("home").onclick=home; return; }
+  var t=pool.shift(); used[t.id]=1;
+  q.innerHTML='<div class="panel">'+
+    '<div class="qnum">real coin · born '+t.mins+' min ago · call it</div>'+
+    '<div class="coin"><div class="csym">$'+t.sym+'</div><div class="cname">'+(t.name||"unnamed")+'</div>'+
+      '<div class="cmet">'+
+        '<div><b>'+t.h+'</b><span>holders</span></div>'+
+        '<div><b>$'+Math.round(t.mc).toLocaleString()+'</b><span>mcap</span></div>'+
+        '<div><b>$'+Math.round(t.liq).toLocaleString()+'</b><span>liquidity</span></div>'+
+        '<div><b>$'+Math.round(t.vol).toLocaleString()+'</b><span>volume</span></div>'+
+      '</div>'+
+      '<div class="duo"><button class="big b-dead" id="d">DEAD 💀</button>'+
+      '<button class="big b-alive" id="a">ALIVE 🫀</button></div>'+
+    '</div><div id="v"></div></div>';
+  function answer(said){
+    var real=alive(t), ok=(said===real);
+    M.doaSeen++; if(ok){ M.doaRight++; burst(50); } saveM();
+    var acc=Math.round(M.doaRight/M.doaSeen*100);
+    document.getElementById("d").disabled=true; document.getElementById("a").disabled=true;
+    document.getElementById("v").innerHTML='<div class="verdict">'+
+      '<div class="vbig '+(ok?"v-ok":"v-no")+'">'+(ok?"CORRECT":"WRONG")+'</div>'+
+      '<div class="vwhy">It was <b>'+(real?"alive":"dead")+'</b>. '+
+        (real? t.h+" holders and $"+Math.round(t.vol).toLocaleString()+" of volume - somebody other than the dev was buying."
+             : t.h+" holders, $"+Math.round(t.vol).toLocaleString()+" volume. Nobody came.")+'</div>'+
+      '<div class="rstats" style="margin-top:16px">'+
+        '<div><b>'+acc+'%</b><span>your accuracy</span></div>'+
+        '<div><b>'+M.doaRight+'/'+M.doaSeen+'</b><span>correct calls</span></div>'+
+      '</div>'+
+      '<div class="row"><button class="act b1" id="nx">NEXT BODY</button>'+
+      '<button class="act b2" id="post2">POST SCORE</button>'+
+      '<button class="act b2" id="home">← other tests</button></div></div>';
+    document.getElementById("nx").onclick=runDoa;
+    document.getElementById("home").onclick=home;
+    document.getElementById("post2").onclick=function(){
+      var txt="I scored "+acc+"% at telling dead coins from live ones at Solana General Hospital ("+M.doaRight+"/"+M.doaSeen+").\n\nReal coins, straight off the chain. Try it:";
+      open("https://twitter.com/intent/tweet?text="+encodeURIComponent(txt),"_blank","noopener");
+    };
+    renderMenu();
   }
-
-  var prev=S.sol; S.sol=Math.max(0,S.sol+delta);
-  S.seen++; if(correct){ S.right++; S.streak++; S.best=Math.max(S.best,S.streak); } else S.streak=0;
-  S.log.unshift({sym:t.sym,act:bought?"APE":"SKIP",d:delta,h:t.holders}); S.log=S.log.slice(0,40);
-  save();
-
-  tween(document.getElementById("v-pf"), prev, S.sol, 2, "");
-  document.getElementById("v-pfs").textContent="SOL · "+(S.sol>=10?"+":"")+(S.sol-10).toFixed(2)+" since admission";
-  document.getElementById("v-sn").textContent=S.sanity;
-  document.getElementById("v-sns").textContent="% · "+(S.sanity>70?"stable":S.sanity>40?"deteriorating":"critical");
-
-  document.getElementById("slot").innerHTML=
-    '<div class="outcome"><div class="oline '+cls+'">'+headline+'</div>'+
-    (delta ? '<div class="odelta '+(delta>0?"o-win":"o-lose")+'">'+(delta>0?"+":"")+delta.toFixed(2)+' SOL</div>' : '')+
-    '<div class="owhy">'+why(t,sc)+'</div>'+
-    '<div style="margin-top:18px"><button class="b-ghost" id="nx">next patient →</button></div></div>';
-  document.getElementById("nx").onclick=nextCoin;
-  renderMeta();
+  document.getElementById("d").onclick=function(){ answer(false); };
+  document.getElementById("a").onclick=function(){ answer(true); };
+  if(pool.length<3) refill();
 }
 
-/* ═════ ранг и лог ═════ */
-var RANKS=[
-  [0,   "EXIT LIQUIDITY", "you are what the chart eats."],
-  [40,  "FRESH MEAT",     "still learning which ones are already dead."],
-  [55,  "DEGENERATE",     "right slightly more often than a coin flip."],
-  [70,  "OUTPATIENT",     "you can read a holder count now. dangerous."],
-  [85,  "DISCHARGED",     "you skip the dead ones. we have nothing left to treat."]
-];
-function renderMeta(){
-  var acc = S.seen ? Math.round(S.right/S.seen*100) : 0;
-  document.getElementById("h-seen").textContent=S.seen;
-  document.getElementById("h-acc").textContent=S.seen?acc+"%":"—";
-  document.getElementById("h-str").textContent=S.best;
-  var r=RANKS[0];
-  RANKS.forEach(function(x){ if(acc>=x[0] && S.seen>=4) r=x; });
-  document.getElementById("r-name").textContent=r[1];
-  document.getElementById("r-why").textContent = S.seen<4
-    ? "make "+(4-S.seen)+" more calls to be assigned a rank."
-    : r[2]+" · "+S.right+" of "+S.seen+" correct";
-  document.getElementById("r-bar").style.width=Math.min(100,acc)+"%";
-
-  var lg=document.getElementById("log");
-  document.getElementById("log-n").textContent=S.log.length+" entries";
-  if(!S.log.length){ lg.innerHTML='<div class="empty">Nothing yet. The first coin is on its way.</div>'; return; }
-  lg.innerHTML=S.log.map(function(e){
-    return '<div class="entry"><span class="act '+(e.act==="APE"?"buy":"skip")+'">'+e.act+'</span>'+
-      '<span>$'+e.sym+' <span style="color:var(--dim)">· '+e.h+' holders</span></span>'+
-      '<span class="d '+(e.d>0?"plus":e.d<0?"minus":"")+'">'+(e.d?(e.d>0?"+":"")+e.d.toFixed(2):"—")+'</span></div>';
-  }).join("");
-}
-
-document.getElementById("reset").onclick=function(){
-  S={sol:10,sanity:100,seen:0,right:0,streak:0,best:0,log:[]}; save();
-  document.getElementById("v-pf").textContent="10.00";
-  document.getElementById("v-sn").textContent="100";
-  renderMeta(); nextCoin();
-};
+/* ── навигация ── */
+function show(){ document.getElementById("menu").classList.add("hide");
+  document.getElementById("quiz").classList.remove("hide"); scrollTo({top:0,behavior:"instant"}); }
+function home(){ document.getElementById("quiz").classList.add("hide");
+  document.getElementById("menu").classList.remove("hide"); renderMenu(); scrollTo({top:0,behavior:"instant"}); }
+document.querySelectorAll(".tcard").forEach(function(c){
+  c.onclick=function(){ c.dataset.t==="degen" ? runDegen() : runDoa(); };
+});
 document.getElementById("copyca").onclick=function(){
   var t=document.getElementById("ca").textContent, b=this;
   var ok=function(){ var o=b.textContent; b.textContent="copied"; setTimeout(function(){ b.textContent=o; },1400); };
   try{ navigator.clipboard.writeText(t).then(ok,ok); }catch(e){ ok(); }
 };
-
-document.getElementById("v-pf").textContent=S.sol.toFixed(2);
-document.getElementById("v-sn").textContent=S.sanity;
-renderMeta(); nextCoin();
-setInterval(refill, 45000);
+renderMenu(); refill();
 </script>
