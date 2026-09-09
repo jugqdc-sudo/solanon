@@ -1,260 +1,250 @@
 <title>Solana Anonymous</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Inter:wght@400;500;600;700&display=swap">
 <style>
 :root{
-  --paper:#F7F5F0; --card:#FFFFFF; --card-2:#EFECE4;
-  --ink:#20241F; --ink-2:#4C534A; --muted:#7B8279;
-  --line:#E0DCD1; --line-2:#CBC5B6;
-  --calm:#3D6B54; --calm-soft:#E6EFE9;
-  --alarm:#A63B26; --alarm-soft:#F7E5E0;
-  --shadow:0 1px 2px rgba(32,36,31,.05), 0 12px 32px -20px rgba(32,36,31,.35);
+  --bg:#0C0E12; --room:#14171D; --room-2:#1B1F27; --edge:#252A34; --edge-2:#333A47;
+  --ink:#ECEFF4; --ink-2:#B8C0CC; --dim:#7C8595;
+  --sol-1:#9945FF; --sol-2:#14F195;
+  --hot:#FF5C5C; --hot-soft:#2A1416;
+  --calm:#14F195; --calm-soft:#0E2A21;
+  --shadow:0 2px 4px rgba(0,0,0,.4), 0 20px 50px -30px rgba(0,0,0,.9);
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --paper:#111410; --card:#191D18; --card-2:#212620;
-    --ink:#EDEFE8; --ink-2:#C3C9BE; --muted:#8C9389;
-    --line:#2B3129; --line-2:#3C4439;
-    --calm:#72C295; --calm-soft:#182A1F;
-    --alarm:#E37E66; --alarm-soft:#2C1A15;
-    --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 36px -20px rgba(0,0,0,.85);
-  }
-}
-:root[data-theme="dark"]{
-  --paper:#111410; --card:#191D18; --card-2:#212620;
-  --ink:#EDEFE8; --ink-2:#C3C9BE; --muted:#8C9389;
-  --line:#2B3129; --line-2:#3C4439;
-  --calm:#72C295; --calm-soft:#182A1F;
-  --alarm:#E37E66; --alarm-soft:#2C1A15;
-  --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 36px -20px rgba(0,0,0,.85);
+:root[data-theme="light"]{
+  --bg:#F2F3F6; --room:#FFFFFF; --room-2:#F6F7FA; --edge:#E1E4EA; --edge-2:#CBD1DA;
+  --ink:#141821; --ink-2:#414A58; --dim:#6E7787;
+  --hot:#C0392B; --hot-soft:#FBE9E7; --calm:#0E8A5F; --calm-soft:#E3F5EE;
+  --shadow:0 1px 2px rgba(20,24,33,.06), 0 14px 36px -24px rgba(20,24,33,.4);
 }
 *{box-sizing:border-box}
-body{background:var(--paper); color:var(--ink); margin:0;
+body{background:var(--bg); color:var(--ink); margin:0;
   font-family:Inter,system-ui,-apple-system,sans-serif; font-size:16px; line-height:1.6}
-.wrap{max-width:740px; margin:0 auto; padding:0 20px 70px}
+.wrap{max-width:860px; margin:0 auto; padding:0 18px 80px}
 
-header{padding:36px 0 26px; border-bottom:1px solid var(--line); text-align:center}
-.mark{font-family:Newsreader,Georgia,serif; font-size:12.5px; letter-spacing:.24em;
-  text-transform:uppercase; color:var(--calm); margin:0 0 10px}
-h1{font-family:Newsreader,Georgia,serif; font-weight:500; font-size:clamp(36px,7vw,56px);
-  line-height:1.05; margin:0; letter-spacing:-.015em; text-wrap:balance}
-.tag{color:var(--ink-2); margin:13px auto 0; font-size:17px; max-width:34em}
+/* шапка */
+header{text-align:center; padding:44px 0 30px}
+.badge{display:inline-block; font-size:11.5px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--sol-2); border:1px solid var(--edge-2); border-radius:99px; padding:5px 14px; margin-bottom:16px}
+h1{font-family:Newsreader,Georgia,serif; font-weight:400; font-size:clamp(38px,8vw,62px);
+  line-height:1.02; margin:0; letter-spacing:-.02em;
+  background:linear-gradient(100deg,var(--sol-1),var(--sol-2)); -webkit-background-clip:text;
+  background-clip:text; color:transparent}
+.sub{color:var(--ink-2); margin:14px auto 0; max-width:33em; font-size:17px}
 
-section{margin:40px 0 0}
-h2{font-family:Newsreader,Georgia,serif; font-weight:500; font-size:27px; margin:0 0 6px}
-.lead{color:var(--ink-2); margin:0 0 18px}
+/* сетка комнат */
+.rooms{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; margin-top:8px}
+.room{background:var(--room); border:1px solid var(--edge); border-radius:16px;
+  padding:22px; box-shadow:var(--shadow); display:flex; flex-direction:column}
+.room.wide{grid-column:1/-1}
+.rt{font-size:11.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--dim); margin:0 0 4px}
+.rn{font-family:Newsreader,Georgia,serif; font-weight:400; font-size:25px; margin:0 0 12px; line-height:1.2}
+.rd{color:var(--ink-2); font-size:14.5px; margin:0 0 16px}
+
+button{font:inherit; font-size:14px; font-weight:600; cursor:pointer; border-radius:10px;
+  padding:11px 18px; border:1px solid transparent; transition:transform .08s, opacity .15s}
+button:active{transform:translateY(1px)}
+button:hover{opacity:.88}
+button:focus-visible{outline:2px solid var(--sol-2); outline-offset:2px}
+.b-hot{background:var(--hot); color:#fff}
+.b-sol{background:linear-gradient(100deg,var(--sol-1),var(--sol-2)); color:#0C0E12}
+.b-ghost{background:transparent; color:var(--ink-2); border-color:var(--edge-2)}
+.row{display:flex; gap:9px; flex-wrap:wrap; margin-top:auto}
 
 /* счётчик */
-.counter{background:var(--card); border:1px solid var(--line); border-radius:14px;
-  margin:26px 0 0; padding:34px 26px; text-align:center; box-shadow:var(--shadow)}
-.num{font-family:Newsreader,Georgia,serif; font-size:clamp(70px,16vw,124px);
-  line-height:.9; font-weight:500; font-variant-numeric:tabular-nums; color:var(--calm)}
-.num.zero{color:var(--alarm)}
-.unit{font-size:12.5px; letter-spacing:.24em; text-transform:uppercase; color:var(--muted); margin-top:14px}
-.since{font-size:14px; color:var(--muted); margin-top:8px}
-.acts{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:22px}
-button{font:inherit; font-size:14px; font-weight:600; cursor:pointer; border-radius:8px;
-  padding:11px 20px; border:1px solid transparent; transition:opacity .15s}
-button:hover{opacity:.86}
-button:focus-visible{outline:2px solid var(--calm); outline-offset:2px}
-.btn-red{background:var(--alarm); color:#fff}
-.btn-green{background:var(--calm); color:#fff}
-.btn-ghost{background:transparent; color:var(--ink-2); border-color:var(--line-2)}
+.big{font-family:Newsreader,Georgia,serif; font-size:clamp(56px,13vw,92px); line-height:.9;
+  font-variant-numeric:tabular-nums; color:var(--calm); text-align:center}
+.big.zero{color:var(--hot)}
+.cap{text-align:center; font-size:11.5px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--dim); margin:12px 0 4px}
+.since{text-align:center; font-size:13px; color:var(--dim); margin-bottom:14px}
 
-/* тест */
-.quiz{background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden}
-.q{padding:16px 20px; border-bottom:1px solid var(--line)}
-.q:last-of-type{border-bottom:none}
-.q p{margin:0 0 11px; font-weight:500}
-.opts{display:flex; gap:8px; flex-wrap:wrap}
-.opt{font-size:13.5px; padding:7px 14px; border:1px solid var(--line-2); border-radius:20px;
-  background:var(--card-2); cursor:pointer; color:var(--ink-2)}
-.opt:hover{border-color:var(--calm)}
-.opt.on{background:var(--calm); color:#fff; border-color:var(--calm)}
-.result{padding:22px 20px; background:var(--alarm-soft); border-top:1px solid var(--line)}
-.result h3{font-family:Newsreader,Georgia,serif; font-weight:500; font-size:23px; margin:0 0 6px; color:var(--alarm)}
-.result p{margin:0; color:var(--ink-2)}
-.result .score{font-family:Newsreader,Georgia,serif; font-size:44px; color:var(--alarm);
-  line-height:1; font-variant-numeric:tabular-nums; margin-bottom:6px}
+/* автомат */
+.reels{display:flex; gap:10px; justify-content:center; margin:6px 0 14px}
+.reel{width:66px; height:78px; border:1px solid var(--edge-2); border-radius:12px;
+  background:var(--room-2); display:flex; align-items:center; justify-content:center;
+  font-size:34px; overflow:hidden}
+.reel.spin{animation:sp .28s linear infinite}
+@keyframes sp{ 0%{transform:translateY(-6px)} 50%{transform:translateY(6px)} 100%{transform:translateY(-6px)} }
+.slot-msg{text-align:center; min-height:42px; color:var(--ink-2); font-size:14.5px; margin-bottom:10px}
+.slot-msg b{color:var(--hot)}
+.tally{display:flex; gap:18px; justify-content:center; font-size:13px; color:var(--dim);
+  font-variant-numeric:tabular-nums; margin-bottom:12px}
+.tally b{color:var(--ink); font-weight:600}
 
-/* шаги */
-ol.steps{list-style:none; counter-reset:s; margin:0; padding:0;
-  border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--card)}
-ol.steps li{counter-increment:s; display:grid; grid-template-columns:40px 1fr; gap:14px;
-  padding:13px 18px; border-bottom:1px solid var(--line)}
-ol.steps li:last-child{border-bottom:none; background:var(--alarm-soft)}
-ol.steps li::before{content:counter(s); font-family:Newsreader,Georgia,serif;
-  color:var(--calm); font-size:19px; font-variant-numeric:tabular-nums}
-ol.steps li:last-child::before{color:var(--alarm)}
+/* дыхание */
+.breath-stage{height:190px; display:flex; align-items:center; justify-content:center; position:relative}
+.orb{width:86px; height:86px; border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, var(--sol-2), var(--sol-1));
+  transition:transform 4s ease-in-out, opacity .4s; opacity:.9}
+.orb.in{transform:scale(1.85)}
+.breath-word{position:absolute; bottom:6px; left:0; right:0; text-align:center;
+  font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--dim)}
+.temptation{position:absolute; top:8px; right:8px; opacity:0; pointer-events:none;
+  transition:opacity .5s}
+.temptation.show{opacity:1; pointer-events:auto; animation:pulse 1.1s infinite}
+@keyframes pulse{ 0%,100%{box-shadow:0 0 0 0 rgba(255,92,92,.5)} 50%{box-shadow:0 0 0 12px rgba(255,92,92,0)} }
 
-/* пруф */
-.proof{display:grid; grid-template-columns:repeat(auto-fit,minmax(148px,1fr)); gap:1px;
-  background:var(--line); border:1px solid var(--line); border-radius:12px; overflow:hidden}
-.proof div{background:var(--card); padding:16px 18px}
-.proof b{display:block; font-family:Newsreader,Georgia,serif; font-size:29px;
-  color:var(--calm); line-height:1.1; font-variant-numeric:tabular-nums}
-.proof span{display:block; font-size:13.5px; color:var(--muted); margin-top:5px}
-.sources{font-size:13px; color:var(--muted); margin-top:12px; line-height:1.7}
-.sources a{color:var(--calm)}
+/* график */
+canvas{width:100%; height:180px; display:block; border:1px solid var(--edge);
+  border-radius:12px; background:var(--room-2)}
+.chart-cap{font-size:13px; color:var(--dim); margin-top:10px; text-align:center;
+  font-variant-numeric:tabular-nums}
 
-/* сертификат */
-.cert{background:var(--card); border:2px double var(--line-2); border-radius:6px;
-  padding:30px 24px; text-align:center; font-family:Newsreader,Georgia,serif}
-.cert .ct{font-size:11.5px; letter-spacing:.24em; text-transform:uppercase; color:var(--muted)}
-.cert .cn{font-size:28px; margin:12px 0 4px}
-.cert .cb{font-size:16px; color:var(--ink-2); line-height:1.75}
-.cert .cs{margin-top:20px; padding-top:14px; border-top:1px solid var(--line);
-  font-size:12.5px; color:var(--muted); font-family:Inter,sans-serif}
-input[type=text]{font:inherit; font-size:15px; padding:10px 13px; width:100%; max-width:280px;
-  border:1px solid var(--line-2); border-radius:8px; background:var(--card-2);
-  color:var(--ink); margin-bottom:16px}
-input:focus-visible{outline:2px solid var(--calm); outline-offset:1px}
+/* оправдания */
+.excuse{background:var(--room-2); border:1px solid var(--edge); border-radius:12px;
+  padding:18px; font-family:Newsreader,Georgia,serif; font-size:20px; line-height:1.45;
+  min-height:86px; display:flex; align-items:center; margin-bottom:14px}
 
-/* помощь */
-.help{background:var(--calm-soft); border:1px solid var(--line); border-radius:12px; padding:20px}
-.help dl{margin:0; display:grid; grid-template-columns:auto 1fr; gap:8px 16px}
-.help dt{color:var(--muted); font-size:13.5px; white-space:nowrap}
-.help dd{margin:0; font-size:14.5px}
+/* факт */
+.fact{background:var(--hot-soft); border:1px solid var(--edge); border-left:3px solid var(--hot);
+  border-radius:10px; padding:16px 18px; font-size:15px; min-height:74px;
+  display:flex; align-items:center; margin-bottom:14px; color:var(--ink-2)}
 
-.ca{background:var(--card); border:1px solid var(--line); border-radius:12px;
-  padding:15px 18px; display:flex; gap:12px; align-items:center; flex-wrap:wrap}
+/* шаги и пруф */
+h2{font-family:Newsreader,Georgia,serif; font-weight:400; font-size:29px; margin:44px 0 6px}
+.lead{color:var(--ink-2); margin:0 0 18px}
+ol.steps{list-style:none; counter-reset:s; margin:0; padding:0; background:var(--room);
+  border:1px solid var(--edge); border-radius:16px; overflow:hidden}
+ol.steps li{counter-increment:s; display:grid; grid-template-columns:38px 1fr; gap:14px;
+  padding:13px 20px; border-bottom:1px solid var(--edge); font-size:15px}
+ol.steps li:last-child{border-bottom:none; background:var(--hot-soft)}
+ol.steps li::before{content:counter(s); font-family:Newsreader,Georgia,serif; color:var(--sol-2);
+  font-size:18px; font-variant-numeric:tabular-nums}
+ol.steps li:last-child::before{color:var(--hot)}
+
+.proof{display:grid; grid-template-columns:repeat(auto-fit,minmax(146px,1fr)); gap:1px;
+  background:var(--edge); border:1px solid var(--edge); border-radius:16px; overflow:hidden}
+.proof div{background:var(--room); padding:18px}
+.proof b{display:block; font-family:Newsreader,Georgia,serif; font-size:30px; color:var(--sol-2);
+  line-height:1.1; font-variant-numeric:tabular-nums}
+.proof span{display:block; font-size:13px; color:var(--dim); margin-top:5px}
+.sources{font-size:12.5px; color:var(--dim); margin-top:12px; line-height:1.8}
+.sources a{color:var(--sol-2)}
+
+.ca{background:var(--room); border:1px solid var(--edge); border-radius:14px; padding:16px 18px;
+  display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:18px}
 .ca code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:13px;
   word-break:break-all; color:var(--ink-2)}
-footer{margin-top:46px; padding-top:18px; border-top:1px solid var(--line);
-  font-size:13px; color:var(--muted); text-align:center; line-height:1.7}
-@media (prefers-reduced-motion: reduce){*{transition:none!important}}
-@media (max-width:520px){ .help dl{grid-template-columns:1fr; gap:2px 0} .help dt{margin-top:8px} }
+footer{margin-top:48px; padding-top:20px; border-top:1px solid var(--edge);
+  font-size:13px; color:var(--dim); text-align:center; line-height:1.8}
+@media (prefers-reduced-motion: reduce){ *{animation:none!important; transition:none!important} }
 </style>
 
 <div class="wrap">
 
   <header>
-    <p class="mark">Support Group</p>
+    <span class="badge">Support Group · est. today</span>
     <h1>Solana Anonymous</h1>
-    <p class="tag">A twelve step program for people who cannot stop buying coins on Solana. First meeting starts the moment you close this tab and open a chart.</p>
+    <p class="sub">A recreation room for people who cannot stop buying coins. Everything here is free. That is the only thing here that is free.</p>
   </header>
 
-  <div class="counter">
-    <div class="num zero" id="num">0</div>
-    <div class="unit" id="unit">days clean</div>
-    <div class="since" id="since">no sobriety on record</div>
-    <div class="acts">
-      <button class="btn-red" id="relapse">I bought again</button>
-      <button class="btn-ghost" id="start">Start counting</button>
+  <div class="rooms">
+
+    <!-- счётчик -->
+    <div class="room">
+      <p class="rt">Room 1</p>
+      <h3 class="rn">Sobriety counter</h3>
+      <div class="big zero" id="num">0</div>
+      <div class="cap" id="unit">days clean</div>
+      <div class="since" id="since">no sobriety on record</div>
+      <div class="row">
+        <button class="b-hot" id="relapse">I bought again</button>
+        <button class="b-ghost" id="start">Start counting</button>
+      </div>
     </div>
+
+    <!-- автомат -->
+    <div class="room">
+      <p class="rt">Room 2</p>
+      <h3 class="rn">Just one more trade</h3>
+      <div class="reels">
+        <div class="reel" id="r0">🎰</div>
+        <div class="reel" id="r1">🎰</div>
+        <div class="reel" id="r2">🎰</div>
+      </div>
+      <div class="slot-msg" id="slotmsg">Pull it. Statistically you are due.</div>
+      <div class="tally">
+        <span>pulls <b id="pulls">0</b></span>
+        <span>wins <b id="wins">0</b></span>
+        <span>rate <b id="rate">0%</b></span>
+      </div>
+      <div class="row"><button class="b-sol" id="pull" style="width:100%">APE IN</button></div>
+    </div>
+
+    <!-- дыхание -->
+    <div class="room">
+      <p class="rt">Room 3</p>
+      <h3 class="rn">Breathing exercise</h3>
+      <p class="rd">Four seconds in, four out. Recommended by actual therapists.</p>
+      <div class="breath-stage">
+        <div class="orb" id="orb"></div>
+        <div class="breath-word" id="bword">press start</div>
+        <button class="b-hot temptation" id="tempt">BUY</button>
+      </div>
+      <div class="row"><button class="b-ghost" id="breathe" style="width:100%">Start breathing</button></div>
+    </div>
+
+    <!-- оправдания -->
+    <div class="room">
+      <p class="rt">Room 4</p>
+      <h3 class="rn">Excuse generator</h3>
+      <p class="rd">For when someone asks what you did with the money.</p>
+      <div class="excuse" id="excuse">press the button and never explain yourself again</div>
+      <div class="row"><button class="b-ghost" id="genexcuse" style="width:100%">Generate</button></div>
+    </div>
+
+    <!-- график -->
+    <div class="room wide">
+      <p class="rt">Room 5</p>
+      <h3 class="rn">Your portfolio, visualised</h3>
+      <p class="rd">Live chart of a coin you are definitely holding. Runs by itself. Nobody has ever seen it go up.</p>
+      <canvas id="chart" width="1600" height="360"></canvas>
+      <div class="chart-cap" id="chartcap">$YOURBAG · -0.0% · since you clicked</div>
+    </div>
+
+    <!-- паника -->
+    <div class="room wide">
+      <p class="rt">Room 6</p>
+      <h3 class="rn">Panic button</h3>
+      <p class="rd">Press when you feel the urge. It gives you a real number instead.</p>
+      <div class="fact" id="fact">Nothing yet. The urge has not arrived. Give it a minute.</div>
+      <div class="row"><button class="b-hot" id="panic" style="width:100%">I feel the urge</button></div>
+    </div>
+
   </div>
 
-  <section>
-    <h2>Self-assessment</h2>
-    <p class="lead">Six questions. Answer honestly, nobody is watching except the eleven wallets tracking you.</p>
-    <div class="quiz" id="quiz">
-      <div class="q" data-q="0">
-        <p>1. When did you last look at a chart?</p>
-        <div class="opts">
-          <span class="opt">Yesterday</span><span class="opt">This morning</span><span class="opt">While reading this</span>
-        </div>
-      </div>
-      <div class="q" data-q="1">
-        <p>2. Do you know what time it is in UTC right now?</p>
-        <div class="opts">
-          <span class="opt">No idea</span><span class="opt">Roughly</span><span class="opt">To the minute</span>
-        </div>
-      </div>
-      <div class="q" data-q="2">
-        <p>3. Have you ever said the words "it's not gambling"?</p>
-        <div class="opts">
-          <span class="opt">Never</span><span class="opt">Once or twice</span><span class="opt">Today</span>
-        </div>
-      </div>
-      <div class="q" data-q="3">
-        <p>4. How many tokens are in your wallet?</p>
-        <div class="opts">
-          <span class="opt">Under ten</span><span class="opt">I'd rather not count</span><span class="opt">The wallet stopped loading</span>
-        </div>
-      </div>
-      <div class="q" data-q="4">
-        <p>5. Have you bought a coin because it had a dog on it?</p>
-        <div class="opts">
-          <span class="opt">No</span><span class="opt">Once</span><span class="opt">I have a favourite breed</span>
-        </div>
-      </div>
-      <div class="q" data-q="5">
-        <p>6. Are you planning to stop?</p>
-        <div class="opts">
-          <span class="opt">Yes</span><span class="opt">After one more</span><span class="opt">Define stop</span>
-        </div>
-      </div>
-      <div class="result" id="result" hidden>
-        <div class="score" id="score">62</div>
-        <h3 id="verdict">Stage IV. Severe.</h3>
-        <p id="diag">Buys tops, sells bottoms, calls it research. You are part of the 26.3%.</p>
-      </div>
-    </div>
-  </section>
+  <h2>The twelve steps</h2>
+  <p class="lead">Ours differ slightly from the originals.</p>
+  <ol class="steps">
+    <li>We admitted we were powerless over the chart.</li>
+    <li>We came to believe a wallet greater than ourselves could restore us.</li>
+    <li>We wrote the seed phrase on paper and immediately lost the paper.</li>
+    <li>We made a searching inventory of every bag we still hold.</li>
+    <li>We admitted to another human being the exact size of the loss.</li>
+    <li>We were entirely ready to stop checking the price at 4am.</li>
+    <li>We humbly asked to be removed from every telegram group.</li>
+    <li>We made a list of all the tickers we had harmed.</li>
+    <li>We made direct amends, except when doing so would require selling.</li>
+    <li>We continued to take inventory, and when we were wrong, we averaged down.</li>
+    <li>We sought through meditation to improve our contact with support levels.</li>
+    <li>Having had a spiritual awakening, we decided to do just one more trade.</li>
+  </ol>
 
-  <section>
-    <h2>This part is not a joke</h2>
-    <p class="lead">Crypto trading addiction is treated as a real behavioural addiction. By real hospitals. Using the same twelve steps used for alcohol.</p>
-    <div class="proof">
-      <div><b>2018</b><span>year a Scottish hospital opened crypto addiction treatment</span></div>
-      <div><b>300+</b><span>patients treated for it since 2016</span></div>
-      <div><b>26.3%</b><span>of 596 active traders met the clinical criteria</span></div>
-      <div><b>40 000</b><span>coins launched on pump.fun every day. 2% survive</span></div>
-    </div>
-    <p class="sources">Sources: <a href="https://www.castlecraig.co.uk/addictions-we-treat/behaviours/cryptocurrency-trading/" target="_blank" rel="noopener">Castle Craig Hospital</a> · <a href="https://decrypt.co/81654/inside-crypto-castle-the-worlds-first-bitcoin-addiction-clinic" target="_blank" rel="noopener">Decrypt, world's first bitcoin addiction clinic</a> · <a href="https://futurism.com/neoscope/people-are-flooding-to-cryptocurrency-rehab-clinics" target="_blank" rel="noopener">Futurism</a> · <a href="https://www.ifa.com/articles/what_science_crypto_trading_addiction_reveals" target="_blank" rel="noopener">Özbek &amp; Topal, 2025, n=596</a></p>
-  </section>
+  <h2>This part is not a joke</h2>
+  <p class="lead">Crypto trading addiction is treated as a real behavioural addiction. By real hospitals. Using the same twelve steps used for alcohol.</p>
+  <div class="proof">
+    <div><b>2018</b><span>year a Scottish hospital opened crypto addiction treatment</span></div>
+    <div><b>300+</b><span>patients treated for it since 2016</span></div>
+    <div><b>26.3%</b><span>of 596 active traders met the clinical criteria</span></div>
+    <div><b>40 000</b><span>coins launched daily on pump.fun. 2% survive</span></div>
+  </div>
+  <p class="sources">Sources: <a href="https://www.castlecraig.co.uk/addictions-we-treat/behaviours/cryptocurrency-trading/" target="_blank" rel="noopener">Castle Craig Hospital</a> · <a href="https://decrypt.co/81654/inside-crypto-castle-the-worlds-first-bitcoin-addiction-clinic" target="_blank" rel="noopener">Decrypt</a> · <a href="https://futurism.com/neoscope/people-are-flooding-to-cryptocurrency-rehab-clinics" target="_blank" rel="noopener">Futurism</a> · <a href="https://www.ifa.com/articles/what_science_crypto_trading_addiction_reveals" target="_blank" rel="noopener">Özbek &amp; Topal, 2025, n=596</a></p>
 
-  <section>
-    <h2>The twelve steps</h2>
-    <p class="lead">Theirs work. Ours are ours.</p>
-    <ol class="steps">
-      <li>We admitted we were powerless over the chart.</li>
-      <li>We came to believe a wallet greater than ourselves could restore us.</li>
-      <li>We wrote the seed phrase on paper and immediately lost the paper.</li>
-      <li>We made a searching inventory of every bag we still hold.</li>
-      <li>We admitted to another human being the exact size of the loss.</li>
-      <li>We were entirely ready to stop checking the price at 4am.</li>
-      <li>We humbly asked to be removed from every telegram group.</li>
-      <li>We made a list of all the tickers we had harmed.</li>
-      <li>We made direct amends, except when doing so would require selling.</li>
-      <li>We continued to take inventory, and when we were wrong, we averaged down.</li>
-      <li>We sought through meditation to improve our contact with support levels.</li>
-      <li>Having had a spiritual awakening, we decided to do just one more trade.</li>
-    </ol>
-  </section>
-
-  <section>
-    <h2>Certificate</h2>
-    <p class="lead">Put your handle in, screenshot it, post it. That is the entire program.</p>
-    <input type="text" id="name" placeholder="your handle" maxlength="26" autocomplete="off">
-    <div class="cert">
-      <div class="ct">Certificate of Sobriety</div>
-      <div class="cn" id="cname">anonymous</div>
-      <div class="cb">has stayed away from the chart for<br><span id="cdays">0 days</span><br>and is doing great, allegedly</div>
-      <div class="cs">Solana Anonymous · $SOLANON</div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Meetings</h2>
-    <div class="help">
-      <dl>
-        <dt>Daily meeting</dt><dd>whenever a new coin migrates. So, continuously.</dd>
-        <dt>Sponsor</dt><dd>the guy who told you about this coin. He is also not clean.</dd>
-        <dt>Group chat</dt><dd>the one you muted and still read.</dd>
-        <dt>Relapse policy</dt><dd>press the red button, take the L, start again tomorrow.</dd>
-      </dl>
-    </div>
-  </section>
-
-  <section>
-    <h2>Contract</h2>
-    <div class="ca">
-      <code id="ca">CA появится здесь после запуска</code>
-      <button class="btn-ghost" id="copyca">copy</button>
-    </div>
-  </section>
+  <div class="ca">
+    <code id="ca">CA появится здесь после запуска</code>
+    <button class="b-ghost" id="copyca">copy</button>
+  </div>
 
   <footer>
     Not medical advice, not financial advice, not advice.<br>
@@ -263,59 +253,151 @@ footer{margin-top:46px; padding-top:18px; border-top:1px solid var(--line);
 </div>
 
 <script>
-var KEY = "solanon_since";
-function read(){ try{ return localStorage.getItem(KEY); }catch(e){ return null; } }
-function write(v){ try{ v === null ? localStorage.removeItem(KEY) : localStorage.setItem(KEY, v); }catch(e){} }
-function render(){
-  var s = read(), n = document.getElementById("num"), u = document.getElementById("unit"),
-      si = document.getElementById("since"), cd = document.getElementById("cdays");
-  if(!s){
-    n.textContent = "0"; n.classList.add("zero"); u.textContent = "days clean";
-    si.textContent = "no sobriety on record"; cd.textContent = "0 days"; return;
-  }
-  var d = Math.floor((Date.now() - Number(s)) / 86400000);
-  n.textContent = String(d); n.classList.toggle("zero", d === 0);
-  u.textContent = d === 1 ? "day clean" : "days clean";
+/* ---------- счётчик ---------- */
+var KEY="solanon_since";
+function rd(){ try{ return localStorage.getItem(KEY); }catch(e){ return null; } }
+function wr(v){ try{ localStorage.setItem(KEY,v); }catch(e){} }
+function renderCounter(){
+  var s=rd(), n=document.getElementById("num"), u=document.getElementById("unit"), si=document.getElementById("since");
+  if(!s){ n.textContent="0"; n.classList.add("zero"); u.textContent="days clean"; si.textContent="no sobriety on record"; return; }
+  var d=Math.floor((Date.now()-Number(s))/86400000);
+  n.textContent=String(d); n.classList.toggle("zero", d===0);
+  u.textContent = d===1 ? "day clean" : "days clean";
   si.textContent = "clean since " + new Date(Number(s)).toLocaleString();
-  cd.textContent = d + (d === 1 ? " day" : " days");
 }
-document.getElementById("relapse").addEventListener("click", function(){ write(String(Date.now())); render(); });
-document.getElementById("start").addEventListener("click", function(){ if(!read()) write(String(Date.now())); render(); });
-document.getElementById("name").addEventListener("input", function(e){
-  var v = e.target.value.trim();
-  document.getElementById("cname").textContent = v ? (v[0] === "@" ? v : "@" + v) : "anonymous";
-});
-document.getElementById("copyca").addEventListener("click", function(){
-  var t = document.getElementById("ca").textContent, b = this;
-  var ok = function(){ var o = b.textContent; b.textContent = "copied"; setTimeout(function(){ b.textContent = o; }, 1400); };
-  try{ navigator.clipboard.writeText(t).then(ok, ok); }catch(e){ ok(); }
-});
+document.getElementById("relapse").onclick=function(){ wr(String(Date.now())); renderCounter(); };
+document.getElementById("start").onclick=function(){ if(!rd()) wr(String(Date.now())); renderCounter(); };
 
-// тест: любой набор ответов даёт один и тот же диагноз, меняются только цифры
-var answered = {};
-var VERDICTS = [
-  ["Stage IV. Severe.", "Buys tops, sells bottoms, calls it research. You are part of the 26.3%."],
-  ["Stage IV. Severe.", "You answered honestly, which is itself a symptom. Welcome to the group."],
-  ["Stage IV. Severe.", "The test has no passing grade. Neither does the market."],
-  ["Stage IV. Severe.", "Everyone gets this result. That is the finding."]
+/* ---------- автомат ---------- */
+var SYM=["🐶","🐱","🚀","💊","🤡","📉","🧢","🐸"];
+var pulls=0, wins=0, spinning=false;
+var NEARMISS=[
+  "Two out of three. <b>So close.</b> Statistically that means nothing.",
+  "You were one symbol away. That feeling is the product.",
+  "<b>Almost.</b> Try again, the machine has no memory and neither do you.",
+  "Missed by one. The house has now taken 1.25% of nothing."
 ];
-document.querySelectorAll(".q").forEach(function(q){
-  q.querySelectorAll(".opt").forEach(function(o){
-    o.addEventListener("click", function(){
-      q.querySelectorAll(".opt").forEach(function(x){ x.classList.remove("on"); });
-      o.classList.add("on");
-      answered[q.dataset.q] = 1;
-      if(Object.keys(answered).length === 6){
-        var r = document.getElementById("result");
-        var v = VERDICTS[Math.floor(Math.random() * VERDICTS.length)];
-        document.getElementById("score").textContent = String(58 + Math.floor(Math.random() * 9));
-        document.getElementById("verdict").textContent = v[0];
-        document.getElementById("diag").textContent = v[1];
-        r.hidden = false;
-        r.scrollIntoView({behavior: "smooth", block: "nearest"});
-      }
-    });
-  });
-});
-render();
+document.getElementById("pull").onclick=function(){
+  if(spinning) return;
+  spinning=true; pulls++;
+  var reels=[0,1,2].map(function(i){ return document.getElementById("r"+i); });
+  reels.forEach(function(r){ r.classList.add("spin"); });
+  var msg=document.getElementById("slotmsg");
+  msg.textContent="spinning…";
+  var iv=setInterval(function(){
+    reels.forEach(function(r){ r.textContent=SYM[Math.floor(Math.random()*SYM.length)]; });
+  },70);
+  setTimeout(function(){
+    clearInterval(iv);
+    reels.forEach(function(r){ r.classList.remove("spin"); });
+    /* два одинаковых всегда, третий всегда другой - вечный near miss */
+    var a=SYM[Math.floor(Math.random()*SYM.length)], b;
+    do { b=SYM[Math.floor(Math.random()*SYM.length)]; } while(b===a);
+    var order=Math.floor(Math.random()*3);
+    var out=[a,a,b];
+    if(order===1) out=[a,b,a];
+    if(order===2) out=[b,a,a];
+    reels.forEach(function(r,i){ r.textContent=out[i]; });
+    msg.innerHTML=NEARMISS[Math.floor(Math.random()*NEARMISS.length)];
+    document.getElementById("pulls").textContent=String(pulls);
+    document.getElementById("wins").textContent=String(wins);
+    document.getElementById("rate").textContent="0%";
+    spinning=false;
+  },1150);
+};
+
+/* ---------- дыхание ---------- */
+var breathing=false, bt=null, tt=null;
+document.getElementById("breathe").onclick=function(){
+  var orb=document.getElementById("orb"), w=document.getElementById("bword"),
+      tempt=document.getElementById("tempt"), btn=this;
+  if(breathing){
+    breathing=false; clearInterval(bt); clearTimeout(tt);
+    orb.classList.remove("in"); w.textContent="press start"; tempt.classList.remove("show");
+    btn.textContent="Start breathing"; return;
+  }
+  breathing=true; btn.textContent="Stop";
+  var inhale=true;
+  var tick=function(){
+    orb.classList.toggle("in", inhale);
+    w.textContent = inhale ? "breathe in" : "breathe out";
+    inhale=!inhale;
+  };
+  tick(); bt=setInterval(tick,4000);
+  tt=setTimeout(function(){ if(breathing) tempt.classList.add("show"); },9000);
+};
+document.getElementById("tempt").onclick=function(){
+  wr(String(Date.now())); renderCounter();
+  document.getElementById("bword").textContent="counter reset. we understand.";
+  this.classList.remove("show");
+};
+
+/* ---------- оправдания ---------- */
+var A=["I did research.","It was a calculated risk.","The chart looked healthy.","A friend vouched for the dev.","It had a dog on it.","The community felt strong.","I was averaging down.","It was only a small position.","The narrative was undeniable.","I was early."];
+var B=["The dev renounced.","Liquidity looked locked.","The holder count was rising.","It had a website.","The ticker was clean.","Volume was building.","It was trending on three platforms.","Someone with a checkmark posted it.","It was already up 40%.","The chart had never done this before."];
+var C=["I still believe in the project.","I am up on paper, in a sense.","This is a long term hold now.","The thesis has not changed.","I sold most of it, actually.","This is why we diversify.","I am not selling at a loss.","I have a plan for this one.","It will come back.","Please stop asking."];
+document.getElementById("genexcuse").onclick=function(){
+  var e=document.getElementById("excuse");
+  e.textContent = A[Math.floor(Math.random()*A.length)] + " " + B[Math.floor(Math.random()*B.length)] + " " + C[Math.floor(Math.random()*C.length)];
+};
+
+/* ---------- график ---------- */
+(function(){
+  var cv=document.getElementById("chart"), ctx=cv.getContext("2d");
+  var W=cv.width, H=cv.height, pts=[], price=100, t0=Date.now();
+  for(var i=0;i<120;i++){ pts.push(price); }
+  function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+  function step(){
+    /* дрейф вниз, но с обнадёживающими отскоками */
+    var drift = -0.55 + (Math.random()<0.18 ? Math.random()*2.2 : 0);
+    price = Math.max(0.4, price + drift + (Math.random()-0.5)*1.4);
+    pts.push(price); if(pts.length>120) pts.shift();
+    draw();
+    document.getElementById("chartcap").textContent =
+      "$YOURBAG · " + ((price-100)).toFixed(1) + "% · " +
+      Math.floor((Date.now()-t0)/1000) + "s since you opened this page";
+  }
+  function draw(){
+    var line=css("--hot"), grid=css("--edge"), fill="rgba(255,92,92,.12)";
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle=grid; ctx.lineWidth=1;
+    for(var g=1;g<4;g++){ var y=H*g/4; ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+    var max=Math.max.apply(null,pts), min=Math.min.apply(null,pts), rng=Math.max(1,max-min);
+    var X=function(i){ return i*(W/(pts.length-1)); };
+    var Y=function(v){ return H-8-((v-min)/rng)*(H-30); };
+    ctx.beginPath(); ctx.moveTo(0,H);
+    pts.forEach(function(v,i){ ctx.lineTo(X(i),Y(v)); });
+    ctx.lineTo(W,H); ctx.closePath(); ctx.fillStyle=fill; ctx.fill();
+    ctx.beginPath();
+    pts.forEach(function(v,i){ i?ctx.lineTo(X(i),Y(v)):ctx.moveTo(X(i),Y(v)); });
+    ctx.strokeStyle=line; ctx.lineWidth=3; ctx.lineJoin="round"; ctx.stroke();
+    ctx.beginPath(); ctx.arc(X(pts.length-1),Y(pts[pts.length-1]),6,0,7); ctx.fillStyle=line; ctx.fill();
+  }
+  draw(); setInterval(step,900);
+})();
+
+/* ---------- паника ---------- */
+var FACTS=[
+  "About 40 000 coins are launched on pump.fun every day. Roughly 2% ever reach a real exchange.",
+  "A Scottish hospital has treated over 300 people for crypto trading addiction since 2016. It is classified as a behavioural addiction, like gambling.",
+  "In a 2025 study of 596 active traders, 26.3% met the clinical criteria for problematic trading. One in four.",
+  "The median memecoin peaks at roughly $4 100 in market cap and never returns to that price.",
+  "Snipers hold a new coin for a median of about 2 seconds. If you are reading the chart, they have already left.",
+  "The urge you are feeling right now lasts about 20 minutes if you do nothing. That is shorter than most rug pulls.",
+  "You are not early. Six bots saw the coin in block zero, before the page finished loading for you."
+];
+var fi=-1;
+document.getElementById("panic").onclick=function(){
+  fi=(fi+1)%FACTS.length;
+  document.getElementById("fact").textContent=FACTS[fi];
+};
+
+/* ---------- контракт ---------- */
+document.getElementById("copyca").onclick=function(){
+  var t=document.getElementById("ca").textContent, b=this;
+  var ok=function(){ var o=b.textContent; b.textContent="copied"; setTimeout(function(){ b.textContent=o; },1400); };
+  try{ navigator.clipboard.writeText(t).then(ok,ok); }catch(e){ ok(); }
+};
+
+renderCounter();
 </script>
