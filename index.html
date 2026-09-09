@@ -1,448 +1,415 @@
 <title>Solana General Hospital</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
 :root{
-  --wall:#0A0E16; --wall2:#111726; --tile:#161D2E; --tile2:#1D2639;
-  --line:#28324A; --line2:#3A4763;
-  --ink:#EAF0FA; --ink2:#AAB7CE; --dim:#6C7A96;
-  --sol1:#9945FF; --sol2:#14F195; --sol3:#00D1FF;
-  --bad:#FF4D6D; --warn:#FFB020;
+  --void:#05070C; --deep:#0A0F1A; --panel:#101725; --panel2:#161F31;
+  --line:#22304A; --line2:#33435F;
+  --ink:#E9F0FB; --ink2:#9FB0CA; --dim:#63758F;
+  --ecg:#14F195; --sol:#9945FF; --cyan:#00D1FF;
+  --bad:#FF3B5C; --gold:#FFC53D;
 }
 *{box-sizing:border-box}
-body{margin:0; background:var(--wall); color:var(--ink); overflow-x:hidden;
-  font-family:"Space Grotesk",system-ui,sans-serif; font-size:16px; line-height:1.55}
-/* плитка на стенах */
-body::before{content:""; position:fixed; inset:0; z-index:-2; opacity:.5;
-  background:
-    linear-gradient(rgba(40,50,74,.5) 1px,transparent 1px) 0 0/100% 46px,
-    linear-gradient(90deg,rgba(40,50,74,.5) 1px,transparent 1px) 0 0/46px 100%,
-    radial-gradient(ellipse 90% 60% at 50% 0%, #182446 0%, #0A0E16 62%)}
-body::after{content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
-  background:radial-gradient(circle at 50% 40%, transparent 40%, rgba(5,7,12,.75) 100%)}
+body{margin:0; background:var(--void); color:var(--ink); overflow-x:hidden;
+  font-family:"Space Grotesk",system-ui,sans-serif; font-size:16px; line-height:1.5;
+  -webkit-font-smoothing:antialiased}
+body::before{content:""; position:fixed; inset:0; z-index:-2;
+  background:radial-gradient(ellipse 80% 55% at 50% 0%, #101E38 0%, #060A12 60%, #04060A 100%)}
+body::after{content:""; position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.4;
+  background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(20,241,149,.028) 2px 3px)}
 
-.wrap{max-width:1000px; margin:0 auto; padding:0 18px 80px; position:relative}
-.screen{display:none; animation:fade .35s ease-out}
-.screen.on{display:block}
-@keyframes fade{from{opacity:0; transform:translateY(10px)}to{opacity:1; transform:none}}
+.wrap{max-width:1000px; margin:0 auto; padding:0 16px 70px}
 
-/* вывеска */
-.sign{text-align:center; padding:46px 0 10px}
-.cross{font-size:40px; color:var(--sol2); filter:drop-shadow(0 0 22px rgba(20,241,149,.6)); animation:flick 5s infinite}
-@keyframes flick{0%,96%,100%{opacity:1}97%{opacity:.25}98%{opacity:1}99%{opacity:.4}}
-h1{font-family:Bungee,Impact,sans-serif; font-weight:400; font-size:clamp(30px,6.6vw,60px);
-  line-height:1.02; margin:10px 0 0; letter-spacing:.01em;
-  background:linear-gradient(100deg,var(--sol2),var(--sol3) 55%,var(--sol1));
-  -webkit-background-clip:text; background-clip:text; color:transparent}
-.est{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.28em;
-  text-transform:uppercase; color:var(--dim); margin-top:12px}
+/* ── шапка ── */
+header{display:flex; align-items:center; gap:14px; padding:20px 0 14px;
+  border-bottom:1px solid var(--line)}
+.cross{font-size:22px; color:var(--ecg); filter:drop-shadow(0 0 14px rgba(20,241,149,.8));
+  animation:flick 6s infinite}
+@keyframes flick{0%,95%,100%{opacity:1}96%{opacity:.3}97%{opacity:1}98%{opacity:.5}}
+.hname{font-family:Bungee,sans-serif; font-size:16px; letter-spacing:.02em; line-height:1.1}
+.hsub{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--dim)}
+.hstat{margin-left:auto; display:flex; gap:18px; font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--dim)}
+.hstat b{display:block; color:var(--ink); font-size:15px; font-weight:600}
 
-.panel{background:linear-gradient(180deg,rgba(29,38,57,.9),rgba(22,29,46,.9));
-  border:1px solid var(--line); border-radius:18px; padding:26px;
-  box-shadow:0 2px 4px rgba(0,0,0,.5), 0 30px 70px -50px #000}
-.tag{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.2em;
-  text-transform:uppercase; color:var(--dim); margin:0 0 6px}
-h2{font-family:Bungee,sans-serif; font-weight:400; font-size:clamp(22px,4vw,32px); margin:0 0 10px}
-h3{font-family:Bungee,sans-serif; font-weight:400; font-size:20px; margin:0 0 8px}
-.lead{color:var(--ink2); margin:0 0 20px}
+/* ── монитор ── */
+.monitor{margin-top:18px; border:1px solid var(--line); border-radius:16px; overflow:hidden;
+  background:linear-gradient(180deg,var(--panel2),var(--panel)); position:relative;
+  box-shadow:0 0 60px -30px rgba(20,241,149,.5), 0 30px 70px -50px #000}
+.vitals{display:grid; grid-template-columns:repeat(3,1fr); border-bottom:1px solid var(--line)}
+.vital{padding:14px 18px; border-right:1px solid var(--line)}
+.vital:last-child{border-right:none}
+.vlabel{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--dim)}
+.vval{font-family:Bungee,sans-serif; font-size:clamp(22px,4.6vw,32px); line-height:1.1; margin-top:5px;
+  font-variant-numeric:tabular-nums; transition:color .3s}
+.v-hr{color:var(--bad)} .v-pf{color:var(--cyan)} .v-sn{color:var(--ecg)}
+.vsub{font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--dim); margin-top:2px}
+canvas#ecg{display:block; width:100%; height:150px; background:rgba(4,8,14,.85)}
 
-button{font:inherit; font-weight:700; cursor:pointer; border:none; border-radius:11px;
-  padding:12px 20px; font-size:15px; transition:transform .1s, opacity .2s}
+/* ── искушение ── */
+.stage{padding:22px 20px 24px; position:relative; min-height:250px}
+.incoming{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.24em;
+  text-transform:uppercase; color:var(--dim); text-align:center; margin-bottom:14px}
+.temptation{max-width:520px; margin:0 auto; border:1px solid var(--line2); border-radius:16px;
+  background:linear-gradient(165deg,rgba(30,42,66,.9),rgba(16,23,37,.9)); padding:20px;
+  animation:slide .45s cubic-bezier(.2,1.3,.4,1)}
+@keyframes slide{from{opacity:0; transform:translateY(26px) scale(.96)}to{opacity:1; transform:none}}
+.tt{display:flex; align-items:center; gap:13px; margin-bottom:16px}
+.tico{width:52px; height:52px; border-radius:14px; flex:none; display:flex; align-items:center;
+  justify-content:center; font-size:26px; background:linear-gradient(150deg,var(--sol),var(--cyan));
+  box-shadow:0 0 26px -8px rgba(153,69,255,.9)}
+.tsym{font-family:Bungee,sans-serif; font-size:23px; line-height:1.1}
+.tage{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--dim)}
+.metrics{display:grid; grid-template-columns:repeat(auto-fit,minmax(88px,1fr)); gap:1px;
+  background:var(--line); border:1px solid var(--line); border-radius:11px; overflow:hidden; margin-bottom:16px}
+.metric{background:rgba(10,15,26,.9); padding:10px 11px}
+.mk{font-family:"IBM Plex Mono",monospace; font-size:9px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--dim)}
+.mv{font-family:"IBM Plex Mono",monospace; font-size:15px; font-weight:600; margin-top:3px;
+  font-variant-numeric:tabular-nums}
+.acts{display:grid; grid-template-columns:1fr 1fr; gap:11px}
+button{font:inherit; font-weight:700; cursor:pointer; border:none; border-radius:12px;
+  padding:15px; font-size:16px; transition:transform .09s, box-shadow .2s, opacity .2s;
+  font-family:Bungee,sans-serif; letter-spacing:.02em}
 button:active{transform:translateY(2px)}
-button:focus-visible{outline:2px solid var(--sol2); outline-offset:3px}
-button:disabled{opacity:.45; cursor:not-allowed}
-.b1{background:linear-gradient(100deg,var(--sol1),var(--sol3),var(--sol2));
-  background-size:200% auto; color:#080B12; animation:sh 4s linear infinite}
-@keyframes sh{0%{background-position:0%}100%{background-position:200%}}
-.b2{background:rgba(255,255,255,.05); color:var(--ink2); border:1px solid var(--line2)}
-input{font:inherit; font-family:"IBM Plex Mono",monospace; font-size:16px; padding:13px 15px;
-  background:rgba(10,14,22,.8); border:1px solid var(--line2); border-radius:11px;
-  color:var(--ink); width:100%}
-input:focus-visible{outline:2px solid var(--sol2); outline-offset:1px}
+button:focus-visible{outline:2px solid var(--ecg); outline-offset:3px}
+button:disabled{opacity:.4; cursor:not-allowed}
+.b-buy{background:linear-gradient(100deg,var(--sol),var(--bad)); color:#fff;
+  box-shadow:0 10px 34px -14px rgba(255,59,92,.9)}
+.b-skip{background:rgba(20,241,149,.1); color:var(--ecg); border:1px solid rgba(20,241,149,.4)}
+.b-ghost{background:rgba(255,255,255,.05); color:var(--ink2); border:1px solid var(--line2);
+  font-family:"Space Grotesk",sans-serif; font-weight:600; font-size:14px; padding:11px 18px}
 
-/* коридор */
-.hall{display:grid; grid-template-columns:repeat(auto-fill,minmax(232px,1fr)); gap:16px; margin-top:26px}
-.door{position:relative; background:linear-gradient(180deg,var(--tile2),var(--tile));
-  border:1px solid var(--line); border-left:4px solid var(--sol1);
-  border-radius:14px; padding:20px; cursor:pointer; text-align:left;
-  transition:transform .18s, box-shadow .18s, border-color .18s}
-.door:hover{transform:translateY(-4px); box-shadow:0 18px 40px -26px #000, 0 0 30px -12px rgba(20,241,149,.4);
-  border-left-color:var(--sol2)}
-.door .no{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.16em; color:var(--dim)}
-.door .nm{font-family:Bungee,sans-serif; font-size:18px; margin:6px 0 3px; line-height:1.2}
-.door .dc{font-size:13.5px; color:var(--ink2)}
-.door .st{position:absolute; top:16px; right:16px; font-size:11px;
-  font-family:"IBM Plex Mono",monospace; padding:3px 9px; border-radius:99px;
-  background:rgba(255,255,255,.06); color:var(--dim)}
-.door.done{border-left-color:var(--sol2)}
-.door.done .st{background:rgba(20,241,149,.14); color:var(--sol2)}
+/* ── исход ── */
+.outcome{max-width:520px; margin:0 auto; text-align:center; animation:slide .4s ease-out}
+.oline{font-family:Bungee,sans-serif; font-size:clamp(26px,6vw,42px); line-height:1.05}
+.o-win{color:var(--ecg)} .o-lose{color:var(--bad)} .o-jack{color:var(--gold)}
+.odelta{font-family:"IBM Plex Mono",monospace; font-size:19px; margin-top:6px; font-variant-numeric:tabular-nums}
+.owhy{color:var(--ink2); font-size:15px; margin:14px auto 0; max-width:30em; min-height:44px}
+.owhy b{color:var(--ink)}
 
-/* приём */
-.doc{display:flex; gap:16px; align-items:center; margin-bottom:18px}
-.ava{width:64px; height:64px; border-radius:16px; flex:none; display:flex; align-items:center;
-  justify-content:center; font-size:32px; background:linear-gradient(150deg,var(--sol1),var(--sol3));
-  box-shadow:0 0 32px -10px rgba(153,69,255,.8)}
-.docn{font-family:Bungee,sans-serif; font-size:19px; line-height:1.2}
-.docs{font-size:13px; color:var(--dim); font-family:"IBM Plex Mono",monospace}
-.say{background:rgba(10,14,22,.6); border-left:3px solid var(--sol2); border-radius:0 12px 12px 0;
-  padding:15px 18px; font-size:16px; color:var(--ink2); margin-bottom:20px; min-height:60px}
-.opts{display:flex; flex-direction:column; gap:9px}
-.opt{text-align:left; background:rgba(255,255,255,.04); border:1px solid var(--line2);
-  color:var(--ink); font-weight:500; font-size:15px; padding:13px 16px; border-radius:11px; cursor:pointer}
-.opt:hover{border-color:var(--sol2); background:rgba(20,241,149,.07)}
+/* ── лог ── */
+.log{margin-top:20px; border:1px solid var(--line); border-radius:14px; overflow:hidden}
+.log-h{padding:11px 16px; background:rgba(16,23,37,.8); border-bottom:1px solid var(--line);
+  font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--dim); display:flex; justify-content:space-between}
+.log-b{max-height:186px; overflow-y:auto}
+.entry{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center;
+  padding:9px 16px; border-bottom:1px solid rgba(34,48,74,.5);
+  font-family:"IBM Plex Mono",monospace; font-size:12.5px}
+.entry:last-child{border-bottom:none}
+.entry .act{font-size:10px; letter-spacing:.1em; padding:2px 7px; border-radius:5px}
+.act.buy{background:rgba(255,59,92,.16); color:var(--bad)}
+.act.skip{background:rgba(20,241,149,.14); color:var(--ecg)}
+.entry .d{text-align:right; font-variant-numeric:tabular-nums}
+.d.plus{color:var(--ecg)} .d.minus{color:var(--bad)}
+.empty{padding:26px; text-align:center; color:var(--dim); font-size:14px}
 
-/* тест рефлексов */
-.reflex{height:160px; border-radius:14px; border:1px solid var(--line2); display:flex;
-  align-items:center; justify-content:center; font-family:Bungee,sans-serif; font-size:24px;
-  cursor:pointer; user-select:none; transition:background .06s}
-.reflex.wait{background:rgba(255,77,109,.14); color:var(--bad)}
-.reflex.go{background:rgba(20,241,149,.22); color:var(--sol2)}
-.reflex.idle{background:rgba(255,255,255,.03); color:var(--dim)}
+/* ── ранг ── */
+.rank{margin-top:20px; display:grid; grid-template-columns:1fr auto; gap:16px; align-items:center;
+  border:1px solid var(--line); border-radius:16px; padding:18px 20px;
+  background:linear-gradient(100deg,rgba(153,69,255,.1),rgba(20,241,149,.06))}
+.rname{font-family:Bungee,sans-serif; font-size:clamp(20px,4.4vw,28px); line-height:1.1;
+  background:linear-gradient(100deg,var(--sol),var(--cyan),var(--ecg));
+  -webkit-background-clip:text; background-clip:text; color:transparent}
+.rwhy{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--dim); margin-top:5px}
+.rbar{height:6px; border-radius:99px; background:rgba(255,255,255,.07); overflow:hidden; margin-top:11px}
+.rbar i{display:block; height:100%; border-radius:99px; width:0%;
+  background:linear-gradient(90deg,var(--sol),var(--ecg)); transition:width .6s cubic-bezier(.2,1,.3,1)}
 
-/* зрение */
-.eye{text-align:center; padding:10px 0 4px; font-family:"IBM Plex Mono",monospace}
-.eye div{margin:7px 0; color:var(--ink2)}
+#fx{position:fixed; inset:0; pointer-events:none; z-index:60}
+.flash{position:fixed; inset:0; pointer-events:none; z-index:55; opacity:0}
+.flash.on{animation:fl .5s ease-out}
+@keyframes fl{0%{opacity:.5}100%{opacity:0}}
 
-/* карта пациента */
-.chart{background:linear-gradient(180deg,#F4F6FB,#E6EAF3); color:#101521; border-radius:16px;
-  padding:28px 26px; font-family:"IBM Plex Mono",monospace; position:relative; overflow:hidden}
-.chart h4{font-family:Bungee,sans-serif; font-size:19px; margin:0 0 4px; letter-spacing:.02em}
-.chart .hosp{font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:#5A6478}
-.chart hr{border:none; border-top:1px dashed #B9C2D4; margin:16px 0}
-.chart .row{display:flex; justify-content:space-between; gap:14px; font-size:13.5px; padding:5px 0;
-  border-bottom:1px dotted #CBD3E1}
-.chart .row b{font-weight:600; text-align:right}
-.chart .verdict{margin-top:16px; padding:14px; border:2px solid #101521; border-radius:10px;
-  text-align:center; font-family:Bungee,sans-serif; font-size:17px}
-.stamp{position:absolute; right:16px; bottom:14px; width:104px; height:104px; border-radius:50%;
-  border:3px solid rgba(190,40,60,.65); color:rgba(190,40,60,.75); display:flex; align-items:center;
-  justify-content:center; text-align:center; font-size:10px; line-height:1.2; transform:rotate(-13deg);
-  font-weight:600; letter-spacing:.06em}
-.pnum{font-size:12px; color:#5A6478}
-
-.bar{height:7px; border-radius:99px; background:var(--tile2); overflow:hidden; margin:20px 0 0}
-.bar i{display:block; height:100%; width:0%; border-radius:99px;
-  background:linear-gradient(90deg,var(--sol1),var(--sol2)); transition:width .5s}
-.foot{margin-top:44px; padding-top:20px; border-top:1px solid var(--line);
-  text-align:center; font-size:12.5px; color:var(--dim); line-height:1.9}
-.foot a{color:var(--sol2)}
-.ca{display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap; margin-top:22px}
-.ca code{font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--ink2); word-break:break-all}
+.foot{margin-top:34px; padding-top:18px; border-top:1px solid var(--line);
+  text-align:center; font-size:12px; color:var(--dim); line-height:1.9}
+.foot a{color:var(--ecg)}
+.ca{display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap; margin-top:14px}
+.ca code{font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:var(--ink2); word-break:break-all}
+@media(max-width:560px){ .vitals{grid-template-columns:1fr 1fr} .vital:nth-child(3){grid-column:1/-1; border-right:none; border-top:1px solid var(--line)} }
 @media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
 </style>
 
+<canvas id="fx"></canvas>
+<div class="flash" id="flash"></div>
+
 <div class="wrap">
-
-<!-- ═══ РЕГИСТРАТУРА ═══ -->
-<div class="screen on" id="s-reg">
-  <div class="sign">
-    <div class="cross">✚</div>
-    <h1>SOLANA GENERAL<br>HOSPITAL</h1>
-    <p class="est">admissions open · no insurance accepted · no refunds</p>
-  </div>
-  <div class="panel" style="max-width:520px;margin:32px auto 0">
-    <p class="tag">Reception</p>
-    <h2>CHECK IN</h2>
-    <p class="lead">Five departments. Five doctors. One discharge summary you will screenshot and regret.</p>
-    <input id="handle" placeholder="your X handle" maxlength="24" autocomplete="off">
-    <div style="display:flex;gap:10px;margin-top:14px">
-      <button class="b1" id="admit" style="flex:1">ADMIT ME</button>
+  <header>
+    <span class="cross">✚</span>
+    <div>
+      <div class="hname">SOLANA GENERAL</div>
+      <div class="hsub">intensive care · bed 12</div>
     </div>
-    <p style="font-size:12.5px;color:var(--dim);margin:14px 0 0">
-      By checking in you consent to being diagnosed by people who are not doctors.</p>
-  </div>
-</div>
-
-<!-- ═══ КОРИДОР ═══ -->
-<div class="screen" id="s-hall">
-  <div class="sign" style="padding-bottom:0">
-    <div class="cross" style="font-size:26px">✚</div>
-    <h1 style="font-size:clamp(24px,4.6vw,40px)">THE CORRIDOR</h1>
-    <p class="est" id="patline">patient #0000</p>
-  </div>
-  <div class="bar"><i id="fill"></i></div>
-  <div class="hall" id="hall"></div>
-  <div style="text-align:center;margin-top:26px">
-    <button class="b1" id="discharge" disabled>GET DISCHARGE SUMMARY</button>
-  </div>
-</div>
-
-<!-- ═══ КАБИНЕТ ═══ -->
-<div class="screen" id="s-room">
-  <div style="max-width:640px;margin:44px auto 0">
-    <div class="panel">
-      <p class="tag" id="r-no">Room</p>
-      <div class="doc">
-        <div class="ava" id="r-ava">🩺</div>
-        <div><div class="docn" id="r-doc">Doctor</div><div class="docs" id="r-spec">specialty</div></div>
-      </div>
-      <div class="say" id="r-say"></div>
-      <div id="r-body"></div>
+    <div class="hstat">
+      <span>seen<b id="h-seen">0</b></span>
+      <span>accuracy<b id="h-acc">—</b></span>
+      <span>best streak<b id="h-str">0</b></span>
     </div>
-    <div style="text-align:center;margin-top:18px">
-      <button class="b2" id="back">← back to corridor</button>
+  </header>
+
+  <div class="monitor">
+    <div class="vitals">
+      <div class="vital"><div class="vlabel">Heart rate</div>
+        <div class="vval v-hr" id="v-hr">72</div><div class="vsub">bpm · resting</div></div>
+      <div class="vital"><div class="vlabel">Portfolio</div>
+        <div class="vval v-pf" id="v-pf">10.00</div><div class="vsub" id="v-pfs">SOL · admitted with 10</div></div>
+      <div class="vital"><div class="vlabel">Sanity</div>
+        <div class="vval v-sn" id="v-sn">100</div><div class="vsub" id="v-sns">%· stable</div></div>
+    </div>
+    <canvas id="ecg" width="1600" height="300"></canvas>
+    <div class="stage" id="stage">
+      <p class="incoming" id="incoming">— the drip is loading a live coin from the chain —</p>
+      <div id="slot"></div>
     </div>
   </div>
-</div>
 
-<!-- ═══ ВЫПИСКА ═══ -->
-<div class="screen" id="s-out">
-  <div class="sign" style="padding-bottom:6px">
-    <div class="cross" style="font-size:26px">✚</div>
-    <h1 style="font-size:clamp(24px,4.6vw,40px)">DISCHARGE</h1>
-  </div>
-  <div style="max-width:560px;margin:20px auto 0">
-    <div class="chart" id="chart"></div>
-    <div style="display:flex;gap:10px;margin-top:16px;justify-content:center;flex-wrap:wrap">
-      <button class="b1" id="share">POST THIS</button>
-      <button class="b2" id="again">Re-admit me</button>
+  <div class="rank">
+    <div>
+      <div class="rname" id="r-name">FRESH MEAT</div>
+      <div class="rwhy" id="r-why">no calls made yet. the doctors are watching.</div>
+      <div class="rbar"><i id="r-bar"></i></div>
     </div>
+    <button class="b-ghost" id="reset">reset chart</button>
   </div>
-</div>
 
-<div class="foot">
-  Not a hospital. Not medical advice. Not advice.<br>
-  Crypto trading addiction is real and treated by real hospitals: <a href="https://www.castlecraig.co.uk/addictions-we-treat/behaviours/cryptocurrency-trading/" target="_blank" rel="noopener">Castle Craig</a> ·
-  <a href="https://www.ifa.com/articles/what_science_crypto_trading_addiction_reveals" target="_blank" rel="noopener">26.3% of 596 traders met the clinical criteria</a>
-  <div class="ca"><code id="ca">CA появится здесь после запуска</code><button class="b2" id="copyca">copy</button></div>
-</div>
+  <div class="log">
+    <div class="log-h"><span>patient decision log</span><span id="log-n">0 entries</span></div>
+    <div class="log-b" id="log"><div class="empty">Nothing yet. The first coin is on its way.</div></div>
+  </div>
+
+  <div class="foot">
+    Every coin shown here is real and was born on Solana minutes ago. Outcomes are computed from its actual on-chain metrics, not from a random number.<br>
+    Crypto trading addiction is real: <a href="https://www.castlecraig.co.uk/addictions-we-treat/behaviours/cryptocurrency-trading/" target="_blank" rel="noopener">Castle Craig Hospital</a> ·
+    <a href="https://www.ifa.com/articles/what_science_crypto_trading_addiction_reveals" target="_blank" rel="noopener">26.3% of 596 traders met the clinical criteria</a>
+    <div class="ca"><code id="ca">CA появится здесь после запуска</code><button class="b-ghost" id="copyca">copy</button></div>
+  </div>
 </div>
 
 <script>
-/* ══ состояние ══ */
-var KEY="sgh_chart";
-var st = load() || { handle:"", num:0, results:{} };
+/* ═════ состояние ═════ */
+var KEY="sgh_icu";
+var S = load() || { sol:10, sanity:100, seen:0, right:0, streak:0, best:0, log:[] };
 function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||"null"); }catch(e){ return null; } }
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify(st)); }catch(e){} }
-function show(id){ document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("on"); });
-  document.getElementById(id).classList.add("on"); scrollTo({top:0,behavior:"instant"}); }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 
-/* ══ кабинеты ══ */
-var ROOMS = [
-  { id:"intake", no:"Room 101", doc:"Dr. Toly", spec:"Intake · General Practice", ava:"🩺",
-    say:"Take a seat. What brings you in today?",
-    kind:"choice",
-    opts:[
-      ["I can't stop checking charts","compulsive chart surveillance"],
-      ["I bought something at 4am","nocturnal acquisition disorder"],
-      ["My friend told me to come","denial, stage two"],
-      ["I'm here for the free stuff","incurable"]
-    ]},
-  { id:"reflex", no:"Room 202", doc:"Dr. Sniper", spec:"Reflex Testing · Neurology", ava:"⚡",
-    say:"Bots enter a coin in about 2 seconds. Let us see how you compare. Click the square the moment it turns green.",
-    kind:"reflex" },
-  { id:"vision", no:"Room 303", doc:"Dr. Whitepaper", spec:"Ophthalmology", ava:"👁",
-    say:"Read the chart. Stop when you cannot. Most patients stop before the line that matters.",
-    kind:"vision" },
-  { id:"blood", no:"Room 404", doc:"Dr. Chain", spec:"Laboratory · Blood Work", ava:"🧪",
-    say:"Give me a wallet address. Any wallet. I will read it like blood work, live from the chain.",
-    kind:"blood" },
-  { id:"psych", no:"Room 505", doc:"Dr. Jeet", spec:"Psychiatry", ava:"🧠",
-    say:"Three questions. There are no wrong answers, only diagnoses.",
-    kind:"psych" }
-];
-
-/* ══ коридор ══ */
-function renderHall(){
-  var h=document.getElementById("hall"); h.innerHTML="";
-  ROOMS.forEach(function(r){
-    var done=!!st.results[r.id];
-    var d=document.createElement("button");
-    d.className="door"+(done?" done":"");
-    d.innerHTML='<span class="st">'+(done?"seen":"waiting")+'</span>'+
-      '<div class="no">'+r.no.toUpperCase()+'</div>'+
-      '<div class="nm">'+r.doc+'</div>'+
-      '<div class="dc">'+r.spec+'</div>';
-    d.onclick=function(){ enterRoom(r); };
-    h.appendChild(d);
-  });
-  var done=Object.keys(st.results).length;
-  document.getElementById("fill").style.width=Math.round(done/ROOMS.length*100)+"%";
-  document.getElementById("discharge").disabled = done<ROOMS.length;
-  document.getElementById("patline").textContent =
-    "patient #"+String(st.num).padStart(4,"0")+(st.handle?" · @"+st.handle.replace(/^@/,""):"")+
-    " · "+done+" of "+ROOMS.length+" seen";
+/* ═════ ЭКГ ═════ */
+var ecg=document.getElementById("ecg"), ex=ecg.getContext("2d");
+var EW=ecg.width, EH=ecg.height, trace=[], head=0, bpm=72, targetBpm=72, beatPhase=0;
+for(var i=0;i<EW;i++) trace.push(EH/2);
+function beatShape(p){
+  /* p 0..1 внутри одного удара - P, QRS, T */
+  if(p<0.10) return Math.sin(p/0.10*Math.PI)*10;
+  if(p<0.16) return -14;
+  if(p<0.22) return 118;
+  if(p<0.28) return -46;
+  if(p<0.50) return Math.sin((p-0.28)/0.22*Math.PI)*26;
+  return 0;
 }
-
-/* ══ вход в кабинет ══ */
-function enterRoom(r){
-  document.getElementById("r-no").textContent=r.no;
-  document.getElementById("r-doc").textContent=r.doc;
-  document.getElementById("r-spec").textContent=r.spec;
-  document.getElementById("r-ava").textContent=r.ava;
-  document.getElementById("r-say").textContent=r.say;
-  var b=document.getElementById("r-body"); b.innerHTML="";
-  if(r.kind==="choice") buildChoice(r,b);
-  if(r.kind==="reflex") buildReflex(r,b);
-  if(r.kind==="vision") buildVision(r,b);
-  if(r.kind==="blood")  buildBlood(r,b);
-  if(r.kind==="psych")  buildPsych(r,b);
-  show("s-room");
-}
-function finish(r, label, note){
-  st.results[r.id]={label:label, note:note||""}; save();
-  var b=document.getElementById("r-body");
-  b.innerHTML='<div class="say" style="border-left-color:var(--warn);margin-top:18px"><b>Noted in your chart:</b><br>'+
-    label+(note?'<br><span style="color:var(--dim);font-size:14px">'+note+'</span>':'')+'</div>'+
-    '<button class="b1" style="width:100%" onclick="document.getElementById(\'back\').click()">Back to corridor</button>';
-}
-
-/* ── 101 выбор ── */
-function buildChoice(r,b){
-  var w=document.createElement("div"); w.className="opts";
-  r.opts.forEach(function(o){
-    var x=document.createElement("button"); x.className="opt"; x.textContent=o[0];
-    x.onclick=function(){ finish(r, o[1]); };
-    w.appendChild(x);
-  });
-  b.appendChild(w);
-}
-
-/* ── 202 рефлексы ── */
-function buildReflex(r,b){
-  var d=document.createElement("div"); d.className="reflex idle"; d.textContent="CLICK TO ARM";
-  b.appendChild(d);
-  var state="idle", t0=0, timer=null;
-  d.onclick=function(){
-    if(state==="idle"){
-      state="wait"; d.className="reflex wait"; d.textContent="WAIT FOR GREEN…";
-      timer=setTimeout(function(){
-        state="go"; d.className="reflex go"; d.textContent="NOW"; t0=performance.now();
-      }, 1200+Math.random()*2600);
-    } else if(state==="wait"){
-      clearTimeout(timer); state="idle"; d.className="reflex idle"; d.textContent="TOO EARLY · CLICK TO ARM";
-      finish(r,"jumped the gun","bought before the chart even loaded. classic.");
-    } else if(state==="go"){
-      var ms=Math.round(performance.now()-t0); state="idle";
-      d.className="reflex idle"; d.textContent=ms+" ms";
-      var bots=2000;
-      var note = ms<250 ? "fast for a human. still "+(ms/bots*100).toFixed(1)+"% as fast as the bot that beat you."
-               : ms<400 ? "average. the bots left the coin "+Math.round(bots/ms)+"x ago."
-               : "the sniper entered and exited before you moved.";
-      finish(r, ms+" ms reaction", note);
-    }
-  };
-}
-
-/* ── 303 зрение ── */
-function buildVision(r,b){
-  var lines=[
-    ["18px","THIS IS NOT FINANCIAL ADVICE"],
-    ["15px","THE TEAM MAY SELL AT ANY TIME"],
-    ["12px","LIQUIDITY IS NOT LOCKED"],
-    ["10px","98% OF THESE TOKENS GO TO ZERO"],
-    ["8px","YOU HAVE READ NONE OF THIS BEFORE BUYING"],
-    ["6.5px","AND YOU WILL NOT READ IT NEXT TIME EITHER"]
-  ];
-  var e=document.createElement("div"); e.className="eye";
-  lines.forEach(function(l,i){ e.innerHTML+='<div style="font-size:'+l[0]+'">'+l[1]+'</div>'; });
-  b.appendChild(e);
-  var w=document.createElement("div"); w.className="opts"; w.style.marginTop="16px";
-  ["I read all six lines","I stopped at line four","I did not read any of it"].forEach(function(t,i){
-    var x=document.createElement("button"); x.className="opt"; x.textContent=t;
-    x.onclick=function(){
-      var res = i===0 ? ["20/20 vision","and it changed nothing. you will still buy."]
-              : i===1 ? ["reads the top half","the important line is always the last one."]
-                      : ["legally blind, financially","the most honest answer given in this room."];
-      finish(r,res[0],res[1]);
-    };
-    w.appendChild(x);
-  });
-  b.appendChild(w);
-}
-
-/* ── 404 анализ крови (живые данные) ── */
-function buildBlood(r,b){
-  b.innerHTML='<input id="w" placeholder="wallet address" autocomplete="off" spellcheck="false">'+
-    '<button class="b1" id="draw" style="width:100%;margin-top:12px">DRAW BLOOD</button>'+
-    '<div id="lab" style="margin-top:16px"></div>';
-  document.getElementById("draw").onclick=async function(){
-    var w=document.getElementById("w").value.trim(), lab=document.getElementById("lab");
-    if(w.length<32){ lab.innerHTML='<div class="say">That is not a wallet. Nice try.</div>'; return; }
-    lab.innerHTML='<div class="say">drawing…</div>'; this.disabled=true;
-    try{
-      var res=await fetch("https://lite-api.jup.ag/ultra/v1/balances/"+encodeURIComponent(w));
-      var j=await res.json();
-      var keys=Object.keys(j||{});
-      var sol=(j.SOL&&j.SOL.uiAmount)||0;
-      var tokens=keys.filter(function(k){ return k!=="SOL"; });
-      var dust=tokens.filter(function(k){ return (j[k].uiAmount||0)<1000; }).length;
-      var note = tokens.length===0 ? "no tokens at all. either recovered, or the wallet is fresh and this begins today."
-               : dust>=tokens.length*0.6 ? "mostly dust. these are not positions, they are souvenirs."
-               : "still holding things. we will see how that goes.";
-      finish(r, tokens.length+" tokens · "+sol.toFixed(2)+" SOL", note);
-    }catch(e){
-      finish(r,"blood sample rejected","the chain refused. it happens.");
-    }
-  };
-}
-
-/* ── 505 психиатрия ── */
-function buildPsych(r,b){
-  var QS=[
-    ["Do you know what time it is in UTC?",["No idea","Roughly","To the minute"]],
-    ["Have you said the words \"it's not gambling\"?",["Never","Once","Today"]],
-    ["What would you do with a 10x tomorrow?",["Take profit","Take half","Buy more of it"]]
-  ];
-  var i=0, score=0;
-  function step(){
-    if(i>=QS.length){
-      var lab = score<=2 ? "mild · outpatient" : score<=4 ? "moderate · weekly meetings" : "severe · you are the 26.3%";
-      finish(r, lab, "everyone in this room scores the same. that is the finding.");
-      return;
-    }
-    b.innerHTML='<p style="font-weight:600;margin:0 0 12px">'+(i+1)+'. '+QS[i][0]+'</p><div class="opts" id="o"></div>';
-    var o=document.getElementById("o");
-    QS[i][1].forEach(function(t,k){
-      var x=document.createElement("button"); x.className="opt"; x.textContent=t;
-      x.onclick=function(){ score+=k; i++; step(); };
-      o.appendChild(x);
-    });
+function drawEcg(){
+  var speed=Math.max(2, Math.round(bpm/16));
+  for(var k=0;k<speed;k++){
+    beatPhase += (bpm/60) / 60 / (EW/ (bpm/60*60) ) * 1;
+    var perBeat = Math.max(40, Math.round(3600/bpm));
+    var p = (head % perBeat) / perBeat;
+    var noise=(Math.random()-0.5)*3.2*(bpm>110?2.4:1);
+    trace[head % EW] = EH/2 - beatShape(p)*(EH/300) - noise;
+    head++;
   }
-  step();
+  ex.clearRect(0,0,EW,EH);
+  ex.strokeStyle="rgba(30,48,74,.55)"; ex.lineWidth=1;
+  for(var g=1;g<4;g++){ var y=EH*g/4; ex.beginPath(); ex.moveTo(0,y); ex.lineTo(EW,y); ex.stroke(); }
+  var col = bpm>115 ? "#FF3B5C" : bpm>92 ? "#FFC53D" : "#14F195";
+  ex.beginPath();
+  for(var x=0;x<EW;x++){
+    var idx=(head+x)%EW, y=trace[idx];
+    x?ex.lineTo(x,y):ex.moveTo(x,y);
+  }
+  ex.strokeStyle=col; ex.lineWidth=3.2; ex.lineJoin="round";
+  ex.shadowColor=col; ex.shadowBlur=16; ex.stroke(); ex.shadowBlur=0;
+  bpm += (targetBpm-bpm)*0.035;
+  targetBpm += (72-targetBpm)*0.004;
+  document.getElementById("v-hr").textContent=Math.round(bpm);
+  requestAnimationFrame(drawEcg);
+}
+drawEcg();
+
+/* ═════ частицы ═════ */
+var fx=document.getElementById("fx"), fc=fx.getContext("2d"), P=[];
+function sizeFx(){ fx.width=innerWidth; fx.height=innerHeight; } sizeFx(); addEventListener("resize",sizeFx);
+function burst(n,cols){
+  for(var i=0;i<n;i++) P.push({x:innerWidth/2,y:innerHeight/2.4,
+    vx:(Math.random()-.5)*16,vy:(Math.random()-.95)*14,s:4+Math.random()*7,
+    c:cols[Math.floor(Math.random()*cols.length)],l:1});
+}
+(function pt(){ fc.clearRect(0,0,fx.width,fx.height); P=P.filter(function(p){return p.l>0;});
+  P.forEach(function(p){ p.x+=p.vx; p.y+=p.vy; p.vy+=.45; p.l-=.012;
+    fc.globalAlpha=Math.max(0,p.l); fc.fillStyle=p.c; fc.fillRect(p.x,p.y,p.s,p.s*1.5); });
+  fc.globalAlpha=1; requestAnimationFrame(pt); })();
+function flash(c){ var f=document.getElementById("flash");
+  f.style.background="radial-gradient(circle at 50% 45%,"+c+",transparent 65%)";
+  f.classList.remove("on"); void f.offsetWidth; f.classList.add("on"); }
+
+/* ═════ твин чисел ═════ */
+function tween(el,from,to,dec,suffix){
+  var t0=performance.now(), d=520;
+  (function st(now){ var k=Math.min(1,(now-t0)/d), e=1-Math.pow(1-k,3);
+    el.textContent=(from+(to-from)*e).toFixed(dec)+(suffix||"");
+    if(k<1) requestAnimationFrame(st); })(t0);
 }
 
-/* ══ выписка ══ */
-function renderChart(){
-  var h=st.handle?("@"+st.handle.replace(/^@/,"")):"anonymous";
-  var rows="";
-  ROOMS.forEach(function(r){
-    var v=st.results[r.id];
-    rows+='<div class="row"><span>'+r.no+' · '+r.doc+'</span><b>'+(v?v.label:"—")+'</b></div>';
-  });
-  var verdicts=["DISCHARGED AGAINST MEDICAL ADVICE","PROGNOSIS: POOR. APPETITE: EXCELLENT",
-                "RELEASED INTO THE TRENCHES","CONDITION STABLE, WALLET IS NOT"];
-  var v=verdicts[st.num % verdicts.length];
-  document.getElementById("chart").innerHTML=
-    '<div class="hosp">Solana General Hospital · discharge summary</div>'+
-    '<h4>'+h+'</h4>'+
-    '<div class="pnum">patient #'+String(st.num).padStart(4,"0")+' · '+new Date().toLocaleDateString()+'</div>'+
-    '<hr>'+rows+
-    '<div class="verdict">'+v+'</div>'+
-    '<div class="stamp">NOT<br>CURED</div>';
+/* ═════ живые монеты ═════ */
+var pool=[], used={};
+async function refill(){
+  try{
+    var r=await fetch("https://lite-api.jup.ag/tokens/v2/recent");
+    var j=await r.json();
+    var list=(Array.isArray(j)?j:(j.tokens||[])).map(function(c){
+      var fp=(c.firstPool||{}).createdAt, born=fp?Date.parse(fp):Date.now();
+      var s=c.stats24h||{};
+      return { id:c.id, sym:(c.symbol||"???").slice(0,12), name:c.name||"",
+        mins:Math.max(1,Math.round((Date.now()-born)/60000)),
+        holders:c.holderCount||0, mcap:c.mcap||0,
+        liq:c.liquidity||0, vol:(s.buyVolume||0)+(s.sellVolume||0),
+        org:c.organicScore||0 };
+    }).filter(function(t){ return !used[t.id]; });
+    pool=pool.concat(list);
+  }catch(e){}
+}
+/* 🔴 исход считаем из НАСТОЯЩИХ метрик монеты, не из рандома */
+function verdict(t){
+  var score=0;
+  if(t.holders>=40) score+=2; else if(t.holders>=15) score+=1; else if(t.holders<=3) score-=2;
+  if(t.vol>=20000) score+=2; else if(t.vol>=4000) score+=1; else if(t.vol<600) score-=2;
+  if(t.liq>=15000) score+=1; else if(t.liq<1200) score-=1;
+  if(t.org>=25) score+=2; else if(t.org<=1) score-=1;
+  if(t.mcap>=25000) score+=1;
+  return score;
+}
+function why(t,sc){
+  if(sc<=-3) return "<b>"+t.holders+" holders, $"+Math.round(t.vol).toLocaleString()+" of volume.</b> Nobody was there. This one was already dead when it reached your screen.";
+  if(sc<0)  return "Thin liquidity and almost no trading. The bots looked at it and moved on.";
+  if(sc===0) return "Genuinely borderline. Half of these go to zero and half do nothing at all.";
+  if(sc<=2) return "<b>"+t.holders+" holders</b> and real volume. Someone other than the dev was buying.";
+  return "<b>Organic score "+Math.round(t.org)+", "+t.holders+" holders, $"+Math.round(t.vol).toLocaleString()+" volume.</b> This one was actually alive.";
 }
 
-/* ══ навигация ══ */
-document.getElementById("admit").onclick=function(){
-  st.handle=document.getElementById("handle").value.trim();
-  if(!st.num) st.num=1000+Math.floor(Math.random()*8999);
-  save(); renderHall(); show("s-hall");
-};
-document.getElementById("back").onclick=function(){ renderHall(); show("s-hall"); };
-document.getElementById("discharge").onclick=function(){ renderChart(); show("s-out"); };
-document.getElementById("again").onclick=function(){
-  st.results={}; save(); renderHall(); show("s-hall");
-};
-document.getElementById("share").onclick=function(){
-  var t="I was admitted to Solana General Hospital and discharged as patient #"+String(st.num).padStart(4,"0")+". Diagnosis: not cured. $MORGUE";
-  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t),"_blank","noopener");
+/* ═════ раунд ═════ */
+var current=null, busy=false;
+async function nextCoin(){
+  if(pool.length<3) await refill();
+  var slot=document.getElementById("slot");
+  if(!pool.length){ slot.innerHTML='<p class="empty">The chain is quiet. Waiting for a body…</p>';
+    setTimeout(nextCoin,4000); return; }
+  current=pool.shift(); used[current.id]=1;
+  document.getElementById("incoming").textContent="— live from the chain, born "+current.mins+" min ago —";
+  var t=current;
+  slot.innerHTML=
+   '<div class="temptation">'+
+    '<div class="tt"><div class="tico">🪙</div>'+
+      '<div><div class="tsym">$'+t.sym+'</div>'+
+      '<div class="tage">'+(t.name||"unnamed").slice(0,34)+' · '+t.mins+' min old</div></div></div>'+
+    '<div class="metrics">'+
+      '<div class="metric"><div class="mk">holders</div><div class="mv">'+t.holders+'</div></div>'+
+      '<div class="metric"><div class="mk">mcap</div><div class="mv">$'+Math.round(t.mcap).toLocaleString()+'</div></div>'+
+      '<div class="metric"><div class="mk">liquidity</div><div class="mv">$'+Math.round(t.liq).toLocaleString()+'</div></div>'+
+      '<div class="metric"><div class="mk">volume</div><div class="mv">$'+Math.round(t.vol).toLocaleString()+'</div></div>'+
+    '</div>'+
+    '<div class="acts"><button class="b-buy" id="buy">APE IN</button>'+
+    '<button class="b-skip" id="skip">WALK AWAY</button></div>'+
+   '</div>';
+  document.getElementById("buy").onclick=function(){ decide(true); };
+  document.getElementById("skip").onclick=function(){ decide(false); };
+  busy=false;
+}
+
+function decide(bought){
+  if(busy||!current) return; busy=true;
+  var t=current, sc=verdict(t), good=sc>0;
+  var correct = bought ? good : !good;
+  var delta=0, headline, cls;
+
+  if(bought){
+    if(sc>=3 && Math.random()<0.25){ delta=+(0.6+Math.random()*2.4); headline="IT ACTUALLY RAN"; cls="o-jack";
+      targetBpm=148; flash("rgba(255,197,61,.5)"); burst(160,["#FFC53D","#14F195","#00D1FF","#9945FF"]); }
+    else if(good){ delta=+(0.08+Math.random()*0.5); headline="YOU GOT OUT GREEN"; cls="o-win";
+      targetBpm=124; flash("rgba(20,241,149,.35)"); burst(45,["#14F195","#00D1FF"]); }
+    else { delta=-(0.15+Math.random()*0.55); headline="RUGGED"; cls="o-lose";
+      targetBpm=158; flash("rgba(255,59,92,.4)"); }
+    S.sanity=Math.max(0,S.sanity-(good?1:4));
+  } else {
+    if(good){ delta=0; headline="YOU MISSED ONE"; cls="o-lose"; targetBpm=96; }
+    else { delta=0; headline="NOTHING HAPPENED. GOOD."; cls="o-win"; targetBpm=68;
+      flash("rgba(20,241,149,.16)"); }
+    S.sanity=Math.min(100,S.sanity+(good?0:2));
+  }
+
+  var prev=S.sol; S.sol=Math.max(0,S.sol+delta);
+  S.seen++; if(correct){ S.right++; S.streak++; S.best=Math.max(S.best,S.streak); } else S.streak=0;
+  S.log.unshift({sym:t.sym,act:bought?"APE":"SKIP",d:delta,h:t.holders}); S.log=S.log.slice(0,40);
+  save();
+
+  tween(document.getElementById("v-pf"), prev, S.sol, 2, "");
+  document.getElementById("v-pfs").textContent="SOL · "+(S.sol>=10?"+":"")+(S.sol-10).toFixed(2)+" since admission";
+  document.getElementById("v-sn").textContent=S.sanity;
+  document.getElementById("v-sns").textContent="% · "+(S.sanity>70?"stable":S.sanity>40?"deteriorating":"critical");
+
+  document.getElementById("slot").innerHTML=
+    '<div class="outcome"><div class="oline '+cls+'">'+headline+'</div>'+
+    (delta ? '<div class="odelta '+(delta>0?"o-win":"o-lose")+'">'+(delta>0?"+":"")+delta.toFixed(2)+' SOL</div>' : '')+
+    '<div class="owhy">'+why(t,sc)+'</div>'+
+    '<div style="margin-top:18px"><button class="b-ghost" id="nx">next patient →</button></div></div>';
+  document.getElementById("nx").onclick=nextCoin;
+  renderMeta();
+}
+
+/* ═════ ранг и лог ═════ */
+var RANKS=[
+  [0,   "EXIT LIQUIDITY", "you are what the chart eats."],
+  [40,  "FRESH MEAT",     "still learning which ones are already dead."],
+  [55,  "DEGENERATE",     "right slightly more often than a coin flip."],
+  [70,  "OUTPATIENT",     "you can read a holder count now. dangerous."],
+  [85,  "DISCHARGED",     "you skip the dead ones. we have nothing left to treat."]
+];
+function renderMeta(){
+  var acc = S.seen ? Math.round(S.right/S.seen*100) : 0;
+  document.getElementById("h-seen").textContent=S.seen;
+  document.getElementById("h-acc").textContent=S.seen?acc+"%":"—";
+  document.getElementById("h-str").textContent=S.best;
+  var r=RANKS[0];
+  RANKS.forEach(function(x){ if(acc>=x[0] && S.seen>=4) r=x; });
+  document.getElementById("r-name").textContent=r[1];
+  document.getElementById("r-why").textContent = S.seen<4
+    ? "make "+(4-S.seen)+" more calls to be assigned a rank."
+    : r[2]+" · "+S.right+" of "+S.seen+" correct";
+  document.getElementById("r-bar").style.width=Math.min(100,acc)+"%";
+
+  var lg=document.getElementById("log");
+  document.getElementById("log-n").textContent=S.log.length+" entries";
+  if(!S.log.length){ lg.innerHTML='<div class="empty">Nothing yet. The first coin is on its way.</div>'; return; }
+  lg.innerHTML=S.log.map(function(e){
+    return '<div class="entry"><span class="act '+(e.act==="APE"?"buy":"skip")+'">'+e.act+'</span>'+
+      '<span>$'+e.sym+' <span style="color:var(--dim)">· '+e.h+' holders</span></span>'+
+      '<span class="d '+(e.d>0?"plus":e.d<0?"minus":"")+'">'+(e.d?(e.d>0?"+":"")+e.d.toFixed(2):"—")+'</span></div>';
+  }).join("");
+}
+
+document.getElementById("reset").onclick=function(){
+  S={sol:10,sanity:100,seen:0,right:0,streak:0,best:0,log:[]}; save();
+  document.getElementById("v-pf").textContent="10.00";
+  document.getElementById("v-sn").textContent="100";
+  renderMeta(); nextCoin();
 };
 document.getElementById("copyca").onclick=function(){
   var t=document.getElementById("ca").textContent, b=this;
   var ok=function(){ var o=b.textContent; b.textContent="copied"; setTimeout(function(){ b.textContent=o; },1400); };
   try{ navigator.clipboard.writeText(t).then(ok,ok); }catch(e){ ok(); }
 };
-if(st.num){ document.getElementById("handle").value=st.handle; }
-renderHall();
+
+document.getElementById("v-pf").textContent=S.sol.toFixed(2);
+document.getElementById("v-sn").textContent=S.sanity;
+renderMeta(); nextCoin();
+setInterval(refill, 45000);
 </script>
