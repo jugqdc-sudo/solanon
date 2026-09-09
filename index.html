@@ -1,0 +1,321 @@
+<title>Solana Anonymous</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#F7F5F0; --card:#FFFFFF; --card-2:#EFECE4;
+  --ink:#20241F; --ink-2:#4C534A; --muted:#7B8279;
+  --line:#E0DCD1; --line-2:#CBC5B6;
+  --calm:#3D6B54; --calm-soft:#E6EFE9;
+  --alarm:#A63B26; --alarm-soft:#F7E5E0;
+  --shadow:0 1px 2px rgba(32,36,31,.05), 0 12px 32px -20px rgba(32,36,31,.35);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#111410; --card:#191D18; --card-2:#212620;
+    --ink:#EDEFE8; --ink-2:#C3C9BE; --muted:#8C9389;
+    --line:#2B3129; --line-2:#3C4439;
+    --calm:#72C295; --calm-soft:#182A1F;
+    --alarm:#E37E66; --alarm-soft:#2C1A15;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 36px -20px rgba(0,0,0,.85);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111410; --card:#191D18; --card-2:#212620;
+  --ink:#EDEFE8; --ink-2:#C3C9BE; --muted:#8C9389;
+  --line:#2B3129; --line-2:#3C4439;
+  --calm:#72C295; --calm-soft:#182A1F;
+  --alarm:#E37E66; --alarm-soft:#2C1A15;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 36px -20px rgba(0,0,0,.85);
+}
+*{box-sizing:border-box}
+body{background:var(--paper); color:var(--ink); margin:0;
+  font-family:Inter,system-ui,-apple-system,sans-serif; font-size:16px; line-height:1.6}
+.wrap{max-width:740px; margin:0 auto; padding:0 20px 70px}
+
+header{padding:36px 0 26px; border-bottom:1px solid var(--line); text-align:center}
+.mark{font-family:Newsreader,Georgia,serif; font-size:12.5px; letter-spacing:.24em;
+  text-transform:uppercase; color:var(--calm); margin:0 0 10px}
+h1{font-family:Newsreader,Georgia,serif; font-weight:500; font-size:clamp(36px,7vw,56px);
+  line-height:1.05; margin:0; letter-spacing:-.015em; text-wrap:balance}
+.tag{color:var(--ink-2); margin:13px auto 0; font-size:17px; max-width:34em}
+
+section{margin:40px 0 0}
+h2{font-family:Newsreader,Georgia,serif; font-weight:500; font-size:27px; margin:0 0 6px}
+.lead{color:var(--ink-2); margin:0 0 18px}
+
+/* счётчик */
+.counter{background:var(--card); border:1px solid var(--line); border-radius:14px;
+  margin:26px 0 0; padding:34px 26px; text-align:center; box-shadow:var(--shadow)}
+.num{font-family:Newsreader,Georgia,serif; font-size:clamp(70px,16vw,124px);
+  line-height:.9; font-weight:500; font-variant-numeric:tabular-nums; color:var(--calm)}
+.num.zero{color:var(--alarm)}
+.unit{font-size:12.5px; letter-spacing:.24em; text-transform:uppercase; color:var(--muted); margin-top:14px}
+.since{font-size:14px; color:var(--muted); margin-top:8px}
+.acts{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:22px}
+button{font:inherit; font-size:14px; font-weight:600; cursor:pointer; border-radius:8px;
+  padding:11px 20px; border:1px solid transparent; transition:opacity .15s}
+button:hover{opacity:.86}
+button:focus-visible{outline:2px solid var(--calm); outline-offset:2px}
+.btn-red{background:var(--alarm); color:#fff}
+.btn-green{background:var(--calm); color:#fff}
+.btn-ghost{background:transparent; color:var(--ink-2); border-color:var(--line-2)}
+
+/* тест */
+.quiz{background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.q{padding:16px 20px; border-bottom:1px solid var(--line)}
+.q:last-of-type{border-bottom:none}
+.q p{margin:0 0 11px; font-weight:500}
+.opts{display:flex; gap:8px; flex-wrap:wrap}
+.opt{font-size:13.5px; padding:7px 14px; border:1px solid var(--line-2); border-radius:20px;
+  background:var(--card-2); cursor:pointer; color:var(--ink-2)}
+.opt:hover{border-color:var(--calm)}
+.opt.on{background:var(--calm); color:#fff; border-color:var(--calm)}
+.result{padding:22px 20px; background:var(--alarm-soft); border-top:1px solid var(--line)}
+.result h3{font-family:Newsreader,Georgia,serif; font-weight:500; font-size:23px; margin:0 0 6px; color:var(--alarm)}
+.result p{margin:0; color:var(--ink-2)}
+.result .score{font-family:Newsreader,Georgia,serif; font-size:44px; color:var(--alarm);
+  line-height:1; font-variant-numeric:tabular-nums; margin-bottom:6px}
+
+/* шаги */
+ol.steps{list-style:none; counter-reset:s; margin:0; padding:0;
+  border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--card)}
+ol.steps li{counter-increment:s; display:grid; grid-template-columns:40px 1fr; gap:14px;
+  padding:13px 18px; border-bottom:1px solid var(--line)}
+ol.steps li:last-child{border-bottom:none; background:var(--alarm-soft)}
+ol.steps li::before{content:counter(s); font-family:Newsreader,Georgia,serif;
+  color:var(--calm); font-size:19px; font-variant-numeric:tabular-nums}
+ol.steps li:last-child::before{color:var(--alarm)}
+
+/* пруф */
+.proof{display:grid; grid-template-columns:repeat(auto-fit,minmax(148px,1fr)); gap:1px;
+  background:var(--line); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.proof div{background:var(--card); padding:16px 18px}
+.proof b{display:block; font-family:Newsreader,Georgia,serif; font-size:29px;
+  color:var(--calm); line-height:1.1; font-variant-numeric:tabular-nums}
+.proof span{display:block; font-size:13.5px; color:var(--muted); margin-top:5px}
+.sources{font-size:13px; color:var(--muted); margin-top:12px; line-height:1.7}
+.sources a{color:var(--calm)}
+
+/* сертификат */
+.cert{background:var(--card); border:2px double var(--line-2); border-radius:6px;
+  padding:30px 24px; text-align:center; font-family:Newsreader,Georgia,serif}
+.cert .ct{font-size:11.5px; letter-spacing:.24em; text-transform:uppercase; color:var(--muted)}
+.cert .cn{font-size:28px; margin:12px 0 4px}
+.cert .cb{font-size:16px; color:var(--ink-2); line-height:1.75}
+.cert .cs{margin-top:20px; padding-top:14px; border-top:1px solid var(--line);
+  font-size:12.5px; color:var(--muted); font-family:Inter,sans-serif}
+input[type=text]{font:inherit; font-size:15px; padding:10px 13px; width:100%; max-width:280px;
+  border:1px solid var(--line-2); border-radius:8px; background:var(--card-2);
+  color:var(--ink); margin-bottom:16px}
+input:focus-visible{outline:2px solid var(--calm); outline-offset:1px}
+
+/* помощь */
+.help{background:var(--calm-soft); border:1px solid var(--line); border-radius:12px; padding:20px}
+.help dl{margin:0; display:grid; grid-template-columns:auto 1fr; gap:8px 16px}
+.help dt{color:var(--muted); font-size:13.5px; white-space:nowrap}
+.help dd{margin:0; font-size:14.5px}
+
+.ca{background:var(--card); border:1px solid var(--line); border-radius:12px;
+  padding:15px 18px; display:flex; gap:12px; align-items:center; flex-wrap:wrap}
+.ca code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:13px;
+  word-break:break-all; color:var(--ink-2)}
+footer{margin-top:46px; padding-top:18px; border-top:1px solid var(--line);
+  font-size:13px; color:var(--muted); text-align:center; line-height:1.7}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+@media (max-width:520px){ .help dl{grid-template-columns:1fr; gap:2px 0} .help dt{margin-top:8px} }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <p class="mark">Support Group</p>
+    <h1>Solana Anonymous</h1>
+    <p class="tag">A twelve step program for people who cannot stop buying coins on Solana. First meeting starts the moment you close this tab and open a chart.</p>
+  </header>
+
+  <div class="counter">
+    <div class="num zero" id="num">0</div>
+    <div class="unit" id="unit">days clean</div>
+    <div class="since" id="since">no sobriety on record</div>
+    <div class="acts">
+      <button class="btn-red" id="relapse">I bought again</button>
+      <button class="btn-ghost" id="start">Start counting</button>
+    </div>
+  </div>
+
+  <section>
+    <h2>Self-assessment</h2>
+    <p class="lead">Six questions. Answer honestly, nobody is watching except the eleven wallets tracking you.</p>
+    <div class="quiz" id="quiz">
+      <div class="q" data-q="0">
+        <p>1. When did you last look at a chart?</p>
+        <div class="opts">
+          <span class="opt">Yesterday</span><span class="opt">This morning</span><span class="opt">While reading this</span>
+        </div>
+      </div>
+      <div class="q" data-q="1">
+        <p>2. Do you know what time it is in UTC right now?</p>
+        <div class="opts">
+          <span class="opt">No idea</span><span class="opt">Roughly</span><span class="opt">To the minute</span>
+        </div>
+      </div>
+      <div class="q" data-q="2">
+        <p>3. Have you ever said the words "it's not gambling"?</p>
+        <div class="opts">
+          <span class="opt">Never</span><span class="opt">Once or twice</span><span class="opt">Today</span>
+        </div>
+      </div>
+      <div class="q" data-q="3">
+        <p>4. How many tokens are in your wallet?</p>
+        <div class="opts">
+          <span class="opt">Under ten</span><span class="opt">I'd rather not count</span><span class="opt">The wallet stopped loading</span>
+        </div>
+      </div>
+      <div class="q" data-q="4">
+        <p>5. Have you bought a coin because it had a dog on it?</p>
+        <div class="opts">
+          <span class="opt">No</span><span class="opt">Once</span><span class="opt">I have a favourite breed</span>
+        </div>
+      </div>
+      <div class="q" data-q="5">
+        <p>6. Are you planning to stop?</p>
+        <div class="opts">
+          <span class="opt">Yes</span><span class="opt">After one more</span><span class="opt">Define stop</span>
+        </div>
+      </div>
+      <div class="result" id="result" hidden>
+        <div class="score" id="score">62</div>
+        <h3 id="verdict">Stage IV. Severe.</h3>
+        <p id="diag">Buys tops, sells bottoms, calls it research. You are part of the 26.3%.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>This part is not a joke</h2>
+    <p class="lead">Crypto trading addiction is treated as a real behavioural addiction. By real hospitals. Using the same twelve steps used for alcohol.</p>
+    <div class="proof">
+      <div><b>2018</b><span>year a Scottish hospital opened crypto addiction treatment</span></div>
+      <div><b>300+</b><span>patients treated for it since 2016</span></div>
+      <div><b>26.3%</b><span>of 596 active traders met the clinical criteria</span></div>
+      <div><b>40 000</b><span>coins launched on pump.fun every day. 2% survive</span></div>
+    </div>
+    <p class="sources">Sources: <a href="https://www.castlecraig.co.uk/addictions-we-treat/behaviours/cryptocurrency-trading/" target="_blank" rel="noopener">Castle Craig Hospital</a> · <a href="https://decrypt.co/81654/inside-crypto-castle-the-worlds-first-bitcoin-addiction-clinic" target="_blank" rel="noopener">Decrypt, world's first bitcoin addiction clinic</a> · <a href="https://futurism.com/neoscope/people-are-flooding-to-cryptocurrency-rehab-clinics" target="_blank" rel="noopener">Futurism</a> · <a href="https://www.ifa.com/articles/what_science_crypto_trading_addiction_reveals" target="_blank" rel="noopener">Özbek &amp; Topal, 2025, n=596</a></p>
+  </section>
+
+  <section>
+    <h2>The twelve steps</h2>
+    <p class="lead">Theirs work. Ours are ours.</p>
+    <ol class="steps">
+      <li>We admitted we were powerless over the chart.</li>
+      <li>We came to believe a wallet greater than ourselves could restore us.</li>
+      <li>We wrote the seed phrase on paper and immediately lost the paper.</li>
+      <li>We made a searching inventory of every bag we still hold.</li>
+      <li>We admitted to another human being the exact size of the loss.</li>
+      <li>We were entirely ready to stop checking the price at 4am.</li>
+      <li>We humbly asked to be removed from every telegram group.</li>
+      <li>We made a list of all the tickers we had harmed.</li>
+      <li>We made direct amends, except when doing so would require selling.</li>
+      <li>We continued to take inventory, and when we were wrong, we averaged down.</li>
+      <li>We sought through meditation to improve our contact with support levels.</li>
+      <li>Having had a spiritual awakening, we decided to do just one more trade.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Certificate</h2>
+    <p class="lead">Put your handle in, screenshot it, post it. That is the entire program.</p>
+    <input type="text" id="name" placeholder="your handle" maxlength="26" autocomplete="off">
+    <div class="cert">
+      <div class="ct">Certificate of Sobriety</div>
+      <div class="cn" id="cname">anonymous</div>
+      <div class="cb">has stayed away from the chart for<br><span id="cdays">0 days</span><br>and is doing great, allegedly</div>
+      <div class="cs">Solana Anonymous · $SOLANON</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Meetings</h2>
+    <div class="help">
+      <dl>
+        <dt>Daily meeting</dt><dd>whenever a new coin migrates. So, continuously.</dd>
+        <dt>Sponsor</dt><dd>the guy who told you about this coin. He is also not clean.</dd>
+        <dt>Group chat</dt><dd>the one you muted and still read.</dd>
+        <dt>Relapse policy</dt><dd>press the red button, take the L, start again tomorrow.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section>
+    <h2>Contract</h2>
+    <div class="ca">
+      <code id="ca">CA появится здесь после запуска</code>
+      <button class="btn-ghost" id="copyca">copy</button>
+    </div>
+  </section>
+
+  <footer>
+    Not medical advice, not financial advice, not advice.<br>
+    If trading has genuinely taken over your life, the hospitals linked above are real and they take patients.
+  </footer>
+</div>
+
+<script>
+var KEY = "solanon_since";
+function read(){ try{ return localStorage.getItem(KEY); }catch(e){ return null; } }
+function write(v){ try{ v === null ? localStorage.removeItem(KEY) : localStorage.setItem(KEY, v); }catch(e){} }
+function render(){
+  var s = read(), n = document.getElementById("num"), u = document.getElementById("unit"),
+      si = document.getElementById("since"), cd = document.getElementById("cdays");
+  if(!s){
+    n.textContent = "0"; n.classList.add("zero"); u.textContent = "days clean";
+    si.textContent = "no sobriety on record"; cd.textContent = "0 days"; return;
+  }
+  var d = Math.floor((Date.now() - Number(s)) / 86400000);
+  n.textContent = String(d); n.classList.toggle("zero", d === 0);
+  u.textContent = d === 1 ? "day clean" : "days clean";
+  si.textContent = "clean since " + new Date(Number(s)).toLocaleString();
+  cd.textContent = d + (d === 1 ? " day" : " days");
+}
+document.getElementById("relapse").addEventListener("click", function(){ write(String(Date.now())); render(); });
+document.getElementById("start").addEventListener("click", function(){ if(!read()) write(String(Date.now())); render(); });
+document.getElementById("name").addEventListener("input", function(e){
+  var v = e.target.value.trim();
+  document.getElementById("cname").textContent = v ? (v[0] === "@" ? v : "@" + v) : "anonymous";
+});
+document.getElementById("copyca").addEventListener("click", function(){
+  var t = document.getElementById("ca").textContent, b = this;
+  var ok = function(){ var o = b.textContent; b.textContent = "copied"; setTimeout(function(){ b.textContent = o; }, 1400); };
+  try{ navigator.clipboard.writeText(t).then(ok, ok); }catch(e){ ok(); }
+});
+
+// тест: любой набор ответов даёт один и тот же диагноз, меняются только цифры
+var answered = {};
+var VERDICTS = [
+  ["Stage IV. Severe.", "Buys tops, sells bottoms, calls it research. You are part of the 26.3%."],
+  ["Stage IV. Severe.", "You answered honestly, which is itself a symptom. Welcome to the group."],
+  ["Stage IV. Severe.", "The test has no passing grade. Neither does the market."],
+  ["Stage IV. Severe.", "Everyone gets this result. That is the finding."]
+];
+document.querySelectorAll(".q").forEach(function(q){
+  q.querySelectorAll(".opt").forEach(function(o){
+    o.addEventListener("click", function(){
+      q.querySelectorAll(".opt").forEach(function(x){ x.classList.remove("on"); });
+      o.classList.add("on");
+      answered[q.dataset.q] = 1;
+      if(Object.keys(answered).length === 6){
+        var r = document.getElementById("result");
+        var v = VERDICTS[Math.floor(Math.random() * VERDICTS.length)];
+        document.getElementById("score").textContent = String(58 + Math.floor(Math.random() * 9));
+        document.getElementById("verdict").textContent = v[0];
+        document.getElementById("diag").textContent = v[1];
+        r.hidden = false;
+        r.scrollIntoView({behavior: "smooth", block: "nearest"});
+      }
+    });
+  });
+});
+render();
+</script>
