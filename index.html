@@ -1,340 +1,448 @@
-<title>The Morgue</title>
+<title>Solana General Hospital</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
 <style>
 :root{
-  --night:#080B12; --night2:#0D1220; --stone:#2A3040; --stone2:#3A4257;
-  --moss:#4A6B52; --ink:#D9DEE8; --ink2:#98A2B6; --dim:#67728A;
-  --moon:#E8EDF7; --flower:#C4506B; --glow:#7FE9C4;
+  --wall:#0A0E16; --wall2:#111726; --tile:#161D2E; --tile2:#1D2639;
+  --line:#28324A; --line2:#3A4763;
+  --ink:#EAF0FA; --ink2:#AAB7CE; --dim:#6C7A96;
+  --sol1:#9945FF; --sol2:#14F195; --sol3:#00D1FF;
+  --bad:#FF4D6D; --warn:#FFB020;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0; background:var(--night); color:var(--ink); overflow-x:hidden;
-  font-family:"Crimson Pro",Georgia,serif; font-size:17px; line-height:1.6}
+body{margin:0; background:var(--wall); color:var(--ink); overflow-x:hidden;
+  font-family:"Space Grotesk",system-ui,sans-serif; font-size:16px; line-height:1.55}
+/* плитка на стенах */
+body::before{content:""; position:fixed; inset:0; z-index:-2; opacity:.5;
+  background:
+    linear-gradient(rgba(40,50,74,.5) 1px,transparent 1px) 0 0/100% 46px,
+    linear-gradient(90deg,rgba(40,50,74,.5) 1px,transparent 1px) 0 0/46px 100%,
+    radial-gradient(ellipse 90% 60% at 50% 0%, #182446 0%, #0A0E16 62%)}
+body::after{content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background:radial-gradient(circle at 50% 40%, transparent 40%, rgba(5,7,12,.75) 100%)}
 
-/* ночь */
-.sky{position:fixed; inset:0; z-index:-3;
-  background:radial-gradient(ellipse 120% 80% at 50% -10%, #16203A 0%, #0B1020 45%, #060810 100%)}
-.stars{position:fixed; inset:0; z-index:-2; opacity:.55}
-.moon{position:fixed; top:6vh; right:9vw; width:88px; height:88px; border-radius:50%; z-index:-2;
-  background:radial-gradient(circle at 36% 34%, #FFF 0%, #E3E9F5 42%, #B9C3D8 75%, #93A0BC 100%);
-  box-shadow:0 0 70px 22px rgba(210,225,255,.16), 0 0 160px 60px rgba(150,180,255,.07)}
-.fog{position:fixed; left:-25%; width:150%; height:280px; z-index:-1; pointer-events:none;
-  background:linear-gradient(180deg,transparent,rgba(150,175,215,.055) 45%,transparent);
-  filter:blur(22px)}
-.fog1{bottom:8%; animation:drift 41s linear infinite}
-.fog2{bottom:26%; animation:drift 63s linear infinite reverse; opacity:.65}
-@keyframes drift{0%{transform:translateX(-12%)}100%{transform:translateX(12%)}}
+.wrap{max-width:1000px; margin:0 auto; padding:0 18px 80px; position:relative}
+.screen{display:none; animation:fade .35s ease-out}
+.screen.on{display:block}
+@keyframes fade{from{opacity:0; transform:translateY(10px)}to{opacity:1; transform:none}}
 
-.wrap{max-width:1080px; margin:0 auto; padding:0 18px 90px; position:relative}
+/* вывеска */
+.sign{text-align:center; padding:46px 0 10px}
+.cross{font-size:40px; color:var(--sol2); filter:drop-shadow(0 0 22px rgba(20,241,149,.6)); animation:flick 5s infinite}
+@keyframes flick{0%,96%,100%{opacity:1}97%{opacity:.25}98%{opacity:1}99%{opacity:.4}}
+h1{font-family:Bungee,Impact,sans-serif; font-weight:400; font-size:clamp(30px,6.6vw,60px);
+  line-height:1.02; margin:10px 0 0; letter-spacing:.01em;
+  background:linear-gradient(100deg,var(--sol2),var(--sol3) 55%,var(--sol1));
+  -webkit-background-clip:text; background-clip:text; color:transparent}
+.est{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.28em;
+  text-transform:uppercase; color:var(--dim); margin-top:12px}
 
-/* ворота */
-header{text-align:center; padding:70px 0 34px}
-.gate{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.34em;
-  text-transform:uppercase; color:var(--dim); margin-bottom:20px}
-h1{font-family:"Pirata One",serif; font-weight:400; font-size:clamp(58px,13vw,132px);
-  line-height:.86; margin:0; letter-spacing:.02em; color:var(--moon);
-  text-shadow:0 0 46px rgba(200,220,255,.28), 0 4px 0 #0A0D16}
-.epitaph{color:var(--ink2); font-style:italic; margin:20px auto 0; max-width:31em; font-size:20px}
-.ledger{display:flex; gap:30px; justify-content:center; flex-wrap:wrap; margin-top:30px;
-  font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--dim)}
-.ledger b{display:block; font-family:"Pirata One",serif; font-size:31px; color:var(--moon);
-  font-weight:400; line-height:1.15}
-.ledger .warm{color:var(--glow)}
+.panel{background:linear-gradient(180deg,rgba(29,38,57,.9),rgba(22,29,46,.9));
+  border:1px solid var(--line); border-radius:18px; padding:26px;
+  box-shadow:0 2px 4px rgba(0,0,0,.5), 0 30px 70px -50px #000}
+.tag{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--dim); margin:0 0 6px}
+h2{font-family:Bungee,sans-serif; font-weight:400; font-size:clamp(22px,4vw,32px); margin:0 0 10px}
+h3{font-family:Bungee,sans-serif; font-weight:400; font-size:20px; margin:0 0 8px}
+.lead{color:var(--ink2); margin:0 0 20px}
 
-/* земля */
-.ground{position:relative; margin-top:44px; padding:34px 0 10px;
-  border-top:1px solid rgba(120,140,180,.13)}
-.ground::before{content:""; position:absolute; top:-1px; left:0; right:0; height:120px;
-  background:linear-gradient(180deg,rgba(80,110,90,.09),transparent); pointer-events:none}
-.sect{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.28em;
-  text-transform:uppercase; color:var(--dim); text-align:center; margin-bottom:8px}
-h2{font-family:"Pirata One",serif; font-weight:400; font-size:clamp(30px,5vw,44px);
-  text-align:center; margin:0 0 10px; color:var(--moon); letter-spacing:.02em}
-.note{text-align:center; color:var(--ink2); font-style:italic; margin:0 auto 30px; max-width:37em}
+button{font:inherit; font-weight:700; cursor:pointer; border:none; border-radius:11px;
+  padding:12px 20px; font-size:15px; transition:transform .1s, opacity .2s}
+button:active{transform:translateY(2px)}
+button:focus-visible{outline:2px solid var(--sol2); outline-offset:3px}
+button:disabled{opacity:.45; cursor:not-allowed}
+.b1{background:linear-gradient(100deg,var(--sol1),var(--sol3),var(--sol2));
+  background-size:200% auto; color:#080B12; animation:sh 4s linear infinite}
+@keyframes sh{0%{background-position:0%}100%{background-position:200%}}
+.b2{background:rgba(255,255,255,.05); color:var(--ink2); border:1px solid var(--line2)}
+input{font:inherit; font-family:"IBM Plex Mono",monospace; font-size:16px; padding:13px 15px;
+  background:rgba(10,14,22,.8); border:1px solid var(--line2); border-radius:11px;
+  color:var(--ink); width:100%}
+input:focus-visible{outline:2px solid var(--sol2); outline-offset:1px}
 
-/* могилы */
-.plots{display:grid; grid-template-columns:repeat(auto-fill,minmax(186px,1fr));
-  gap:22px 18px; align-items:end}
-.plot{position:relative; cursor:default; animation:rise .6s ease-out both}
-@keyframes rise{from{opacity:0; transform:translateY(16px)}to{opacity:1; transform:none}}
-.stone{position:relative; background:linear-gradient(178deg,#39415A 0%,#262D42 42%,#1B2133 100%);
-  border:1px solid #454E6B; border-bottom:none; border-radius:92px 92px 8px 8px;
-  padding:26px 15px 20px; text-align:center; min-height:186px;
-  box-shadow:inset 0 2px 0 rgba(255,255,255,.09), 0 20px 34px -22px #000;
-  transition:transform .25s, box-shadow .25s}
-.plot:hover .stone{transform:translateY(-5px);
-  box-shadow:inset 0 2px 0 rgba(255,255,255,.14), 0 26px 40px -20px #000, 0 0 34px -8px rgba(127,233,196,.3)}
-.cross{font-family:"Pirata One",serif; font-size:19px; color:#6A7591; margin-bottom:6px}
-.tick{font-family:"Pirata One",serif; font-size:23px; color:var(--moon); line-height:1.15;
-  word-break:break-word}
-.dates{font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--dim); margin-top:7px}
-.lived{font-family:"IBM Plex Mono",monospace; font-size:11px; color:#8E9AB4; margin-top:3px}
-.epi{font-style:italic; font-size:13.5px; color:var(--ink2); margin-top:11px; line-height:1.42; min-height:38px}
-.dirt{height:13px; border-radius:0 0 12px 12px;
-  background:linear-gradient(180deg,#2E2A22,#1A1712); box-shadow:0 8px 18px -8px #000}
-.grass{height:7px; margin-top:-7px; border-radius:99px;
-  background:linear-gradient(90deg,transparent,rgba(74,107,82,.6),transparent)}
-.flowers{position:absolute; top:11px; right:13px; font-size:15px; cursor:pointer;
-  opacity:.35; transition:opacity .2s, transform .2s; user-select:none}
-.flowers:hover{opacity:1; transform:scale(1.25)}
-.flowers.laid{opacity:1}
-.fcount{font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--flower); margin-left:2px}
+/* коридор */
+.hall{display:grid; grid-template-columns:repeat(auto-fill,minmax(232px,1fr)); gap:16px; margin-top:26px}
+.door{position:relative; background:linear-gradient(180deg,var(--tile2),var(--tile));
+  border:1px solid var(--line); border-left:4px solid var(--sol1);
+  border-radius:14px; padding:20px; cursor:pointer; text-align:left;
+  transition:transform .18s, box-shadow .18s, border-color .18s}
+.door:hover{transform:translateY(-4px); box-shadow:0 18px 40px -26px #000, 0 0 30px -12px rgba(20,241,149,.4);
+  border-left-color:var(--sol2)}
+.door .no{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.16em; color:var(--dim)}
+.door .nm{font-family:Bungee,sans-serif; font-size:18px; margin:6px 0 3px; line-height:1.2}
+.door .dc{font-size:13.5px; color:var(--ink2)}
+.door .st{position:absolute; top:16px; right:16px; font-size:11px;
+  font-family:"IBM Plex Mono",monospace; padding:3px 9px; border-radius:99px;
+  background:rgba(255,255,255,.06); color:var(--dim)}
+.door.done{border-left-color:var(--sol2)}
+.door.done .st{background:rgba(20,241,149,.14); color:var(--sol2)}
 
-/* поиск */
-.search{max-width:560px; margin:0 auto; display:flex; gap:10px; flex-wrap:wrap}
-input{flex:1; min-width:220px; font:inherit; font-size:16px; padding:13px 16px;
-  background:rgba(20,26,42,.75); border:1px solid var(--stone2); border-radius:10px;
-  color:var(--ink); font-family:"IBM Plex Mono",monospace}
-input:focus-visible{outline:2px solid var(--glow); outline-offset:1px}
-button{font:inherit; font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:600;
-  letter-spacing:.08em; text-transform:uppercase; cursor:pointer; border-radius:10px;
-  padding:13px 22px; border:1px solid var(--stone2); background:rgba(40,48,70,.8); color:var(--ink);
-  transition:background .2s, transform .1s}
-button:hover{background:rgba(58,68,95,.9)}
-button:active{transform:translateY(1px)}
-button:focus-visible{outline:2px solid var(--glow); outline-offset:2px}
-.found{max-width:340px; margin:28px auto 0}
-.found .plot{animation:rise .55s ease-out both}
-.msg{text-align:center; color:var(--dim); font-style:italic; margin-top:18px; min-height:26px}
+/* приём */
+.doc{display:flex; gap:16px; align-items:center; margin-bottom:18px}
+.ava{width:64px; height:64px; border-radius:16px; flex:none; display:flex; align-items:center;
+  justify-content:center; font-size:32px; background:linear-gradient(150deg,var(--sol1),var(--sol3));
+  box-shadow:0 0 32px -10px rgba(153,69,255,.8)}
+.docn{font-family:Bungee,sans-serif; font-size:19px; line-height:1.2}
+.docs{font-size:13px; color:var(--dim); font-family:"IBM Plex Mono",monospace}
+.say{background:rgba(10,14,22,.6); border-left:3px solid var(--sol2); border-radius:0 12px 12px 0;
+  padding:15px 18px; font-size:16px; color:var(--ink2); margin-bottom:20px; min-height:60px}
+.opts{display:flex; flex-direction:column; gap:9px}
+.opt{text-align:left; background:rgba(255,255,255,.04); border:1px solid var(--line2);
+  color:var(--ink); font-weight:500; font-size:15px; padding:13px 16px; border-radius:11px; cursor:pointer}
+.opt:hover{border-color:var(--sol2); background:rgba(20,241,149,.07)}
 
-/* смотритель */
-.keeper{margin:56px auto 0; max-width:640px; text-align:center; padding:26px 24px;
-  border:1px solid rgba(120,140,180,.14); border-radius:16px; background:rgba(13,18,32,.55)}
-.keeper .who{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.26em;
-  text-transform:uppercase; color:var(--dim); margin-bottom:12px}
-.keeper p{margin:0; font-style:italic; font-size:19px; color:var(--ink2); min-height:58px}
+/* тест рефлексов */
+.reflex{height:160px; border-radius:14px; border:1px solid var(--line2); display:flex;
+  align-items:center; justify-content:center; font-family:Bungee,sans-serif; font-size:24px;
+  cursor:pointer; user-select:none; transition:background .06s}
+.reflex.wait{background:rgba(255,77,109,.14); color:var(--bad)}
+.reflex.go{background:rgba(20,241,149,.22); color:var(--sol2)}
+.reflex.idle{background:rgba(255,255,255,.03); color:var(--dim)}
 
-/* правда */
-.truth{display:grid; grid-template-columns:repeat(auto-fit,minmax(148px,1fr)); gap:16px; margin-top:22px}
-.truth div{text-align:center; padding:20px 14px; border:1px solid rgba(120,140,180,.13);
-  border-radius:14px; background:rgba(13,18,32,.5)}
-.truth b{display:block; font-family:"Pirata One",serif; font-size:30px; color:var(--moon); font-weight:400}
-.truth span{display:block; font-size:13.5px; color:var(--dim); margin-top:6px; font-family:"IBM Plex Mono",monospace}
+/* зрение */
+.eye{text-align:center; padding:10px 0 4px; font-family:"IBM Plex Mono",monospace}
+.eye div{margin:7px 0; color:var(--ink2)}
 
-.ca{display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap; margin-top:34px}
+/* карта пациента */
+.chart{background:linear-gradient(180deg,#F4F6FB,#E6EAF3); color:#101521; border-radius:16px;
+  padding:28px 26px; font-family:"IBM Plex Mono",monospace; position:relative; overflow:hidden}
+.chart h4{font-family:Bungee,sans-serif; font-size:19px; margin:0 0 4px; letter-spacing:.02em}
+.chart .hosp{font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:#5A6478}
+.chart hr{border:none; border-top:1px dashed #B9C2D4; margin:16px 0}
+.chart .row{display:flex; justify-content:space-between; gap:14px; font-size:13.5px; padding:5px 0;
+  border-bottom:1px dotted #CBD3E1}
+.chart .row b{font-weight:600; text-align:right}
+.chart .verdict{margin-top:16px; padding:14px; border:2px solid #101521; border-radius:10px;
+  text-align:center; font-family:Bungee,sans-serif; font-size:17px}
+.stamp{position:absolute; right:16px; bottom:14px; width:104px; height:104px; border-radius:50%;
+  border:3px solid rgba(190,40,60,.65); color:rgba(190,40,60,.75); display:flex; align-items:center;
+  justify-content:center; text-align:center; font-size:10px; line-height:1.2; transform:rotate(-13deg);
+  font-weight:600; letter-spacing:.06em}
+.pnum{font-size:12px; color:#5A6478}
+
+.bar{height:7px; border-radius:99px; background:var(--tile2); overflow:hidden; margin:20px 0 0}
+.bar i{display:block; height:100%; width:0%; border-radius:99px;
+  background:linear-gradient(90deg,var(--sol1),var(--sol2)); transition:width .5s}
+.foot{margin-top:44px; padding-top:20px; border-top:1px solid var(--line);
+  text-align:center; font-size:12.5px; color:var(--dim); line-height:1.9}
+.foot a{color:var(--sol2)}
+.ca{display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap; margin-top:22px}
 .ca code{font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--ink2); word-break:break-all}
-footer{margin-top:56px; padding-top:24px; border-top:1px solid rgba(120,140,180,.13);
-  text-align:center; font-size:14px; color:var(--dim); font-style:italic; line-height:1.9}
 @media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
 </style>
 
-<div class="sky"></div>
-<canvas class="stars" id="stars"></canvas>
-<div class="moon"></div>
-<div class="fog fog1"></div>
-<div class="fog fog2"></div>
-
 <div class="wrap">
 
-  <header>
-    <p class="gate">— you are entering consecrated ground —</p>
-    <h1>THE MORGUE</h1>
-    <p class="epitaph">Every coin that died on Solana today is buried here. The bodies are real, pulled from the chain, still warm.</p>
-    <div class="ledger">
-      <span><b id="l-buried">—</b>buried in the last hour</span>
-      <span><b id="l-alive" class="warm">—</b>still breathing</span>
-      <span><b id="l-flowers">0</b>flowers laid by you</span>
-    </div>
-  </header>
-
-  <div class="ground">
-    <p class="sect">Section A · fresh graves</p>
-    <h2>TODAY'S DEAD</h2>
-    <p class="note">Pulled live from the chain, refreshed every half minute. If a stone appears while you read this, someone just lost their money.</p>
-    <div class="plots" id="plots"></div>
+<!-- ═══ РЕГИСТРАТУРА ═══ -->
+<div class="screen on" id="s-reg">
+  <div class="sign">
+    <div class="cross">✚</div>
+    <h1>SOLANA GENERAL<br>HOSPITAL</h1>
+    <p class="est">admissions open · no insurance accepted · no refunds</p>
   </div>
-
-  <div class="ground">
-    <p class="sect">Section B · the family plot</p>
-    <h2>FIND YOUR OWN</h2>
-    <p class="note">Type a ticker. If it is dead, we will show you where it lies.</p>
-    <div class="search">
-      <input id="q" placeholder="TICKER, e.g. BIGGUY" autocomplete="off" spellcheck="false">
-      <button id="dig">Exhume</button>
+  <div class="panel" style="max-width:520px;margin:32px auto 0">
+    <p class="tag">Reception</p>
+    <h2>CHECK IN</h2>
+    <p class="lead">Five departments. Five doctors. One discharge summary you will screenshot and regret.</p>
+    <input id="handle" placeholder="your X handle" maxlength="24" autocomplete="off">
+    <div style="display:flex;gap:10px;margin-top:14px">
+      <button class="b1" id="admit" style="flex:1">ADMIT ME</button>
     </div>
-    <div class="msg" id="msg"></div>
-    <div class="found" id="found"></div>
+    <p style="font-size:12.5px;color:var(--dim);margin:14px 0 0">
+      By checking in you consent to being diagnosed by people who are not doctors.</p>
   </div>
+</div>
 
-  <div class="keeper">
-    <p class="who">the keeper speaks</p>
-    <p id="keeper">Mind the fresh soil. We buried thirty-nine thousand of them yesterday and the ground has not settled.</p>
+<!-- ═══ КОРИДОР ═══ -->
+<div class="screen" id="s-hall">
+  <div class="sign" style="padding-bottom:0">
+    <div class="cross" style="font-size:26px">✚</div>
+    <h1 style="font-size:clamp(24px,4.6vw,40px)">THE CORRIDOR</h1>
+    <p class="est" id="patline">patient #0000</p>
   </div>
+  <div class="bar"><i id="fill"></i></div>
+  <div class="hall" id="hall"></div>
+  <div style="text-align:center;margin-top:26px">
+    <button class="b1" id="discharge" disabled>GET DISCHARGE SUMMARY</button>
+  </div>
+</div>
 
-  <div class="ground">
-    <p class="sect">Section C · the arithmetic</p>
-    <h2>NOBODY IS EXAGGERATING</h2>
-    <div class="truth">
-      <div><b>40 000</b><span>coins born daily</span></div>
-      <div><b>2%</b><span>reach an exchange</span></div>
-      <div><b>$4 117</b><span>median lifetime peak</span></div>
-      <div><b>26.3%</b><span>of traders clinically addicted</span></div>
+<!-- ═══ КАБИНЕТ ═══ -->
+<div class="screen" id="s-room">
+  <div style="max-width:640px;margin:44px auto 0">
+    <div class="panel">
+      <p class="tag" id="r-no">Room</p>
+      <div class="doc">
+        <div class="ava" id="r-ava">🩺</div>
+        <div><div class="docn" id="r-doc">Doctor</div><div class="docs" id="r-spec">specialty</div></div>
+      </div>
+      <div class="say" id="r-say"></div>
+      <div id="r-body"></div>
     </div>
-    <p class="note" style="margin-top:16px; font-size:13.5px">
-      Sources: <a href="https://www.castlecraig.co.uk/addictions-we-treat/behaviours/cryptocurrency-trading/" target="_blank" rel="noopener" style="color:var(--glow)">Castle Craig Hospital</a> ·
-      <a href="https://www.ifa.com/articles/what_science_crypto_trading_addiction_reveals" target="_blank" rel="noopener" style="color:var(--glow)">Özbek &amp; Topal, 2025, n=596</a> ·
-      live data from Jupiter
-    </p>
-    <div class="ca">
-      <code id="ca">CA появится здесь после запуска</code>
-      <button id="copyca">copy</button>
+    <div style="text-align:center;margin-top:18px">
+      <button class="b2" id="back">← back to corridor</button>
     </div>
   </div>
+</div>
 
-  <footer>
-    The bodies on this page are real and were alive an hour ago.<br>
-    If trading has taken over your life, the hospital linked above is real and takes patients.
-  </footer>
+<!-- ═══ ВЫПИСКА ═══ -->
+<div class="screen" id="s-out">
+  <div class="sign" style="padding-bottom:6px">
+    <div class="cross" style="font-size:26px">✚</div>
+    <h1 style="font-size:clamp(24px,4.6vw,40px)">DISCHARGE</h1>
+  </div>
+  <div style="max-width:560px;margin:20px auto 0">
+    <div class="chart" id="chart"></div>
+    <div style="display:flex;gap:10px;margin-top:16px;justify-content:center;flex-wrap:wrap">
+      <button class="b1" id="share">POST THIS</button>
+      <button class="b2" id="again">Re-admit me</button>
+    </div>
+  </div>
+</div>
+
+<div class="foot">
+  Not a hospital. Not medical advice. Not advice.<br>
+  Crypto trading addiction is real and treated by real hospitals: <a href="https://www.castlecraig.co.uk/addictions-we-treat/behaviours/cryptocurrency-trading/" target="_blank" rel="noopener">Castle Craig</a> ·
+  <a href="https://www.ifa.com/articles/what_science_crypto_trading_addiction_reveals" target="_blank" rel="noopener">26.3% of 596 traders met the clinical criteria</a>
+  <div class="ca"><code id="ca">CA появится здесь после запуска</code><button class="b2" id="copyca">copy</button></div>
+</div>
 </div>
 
 <script>
-/* ── звёзды ── */
-(function(){
-  var c=document.getElementById("stars"), x=c.getContext("2d"), st=[];
-  function size(){ c.width=innerWidth; c.height=innerHeight;
-    st=[]; for(var i=0;i<130;i++) st.push({x:Math.random()*c.width,y:Math.random()*c.height*.75,
-      r:Math.random()*1.3+.2, p:Math.random()*Math.PI*2, s:.008+Math.random()*.02}); }
-  size(); addEventListener("resize",size);
-  (function loop(){
-    x.clearRect(0,0,c.width,c.height);
-    st.forEach(function(s){ s.p+=s.s;
-      x.globalAlpha=.35+Math.sin(s.p)*.35; x.fillStyle="#DCE6FF";
-      x.beginPath(); x.arc(s.x,s.y,s.r,0,7); x.fill(); });
-    x.globalAlpha=1; requestAnimationFrame(loop);
-  })();
-})();
+/* ══ состояние ══ */
+var KEY="sgh_chart";
+var st = load() || { handle:"", num:0, results:{} };
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||"null"); }catch(e){ return null; } }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(st)); }catch(e){} }
+function show(id){ document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("on"); });
+  document.getElementById(id).classList.add("on"); scrollTo({top:0,behavior:"instant"}); }
 
-/* ── эпитафии по данным ── */
-function epitaph(t){
-  var h=t.holderCount||0, mins=t.mins, vol=t.vol;
-  if(h<=1) return "his only holder was the man who made him.";
-  if(vol<80) return "nobody came. not even the bots.";
-  if(mins<3) return "gone before the chart finished loading.";
-  if(vol<200) return "the bots looked, and the bots left.";
-  if(h<=4) return "survived by " + h + " wallets, none of them speaking.";
-  if(mins<20) return "lived " + mins + " minutes. long enough to hope.";
-  if(vol<1200) return "the volume was mostly the dev, changing pockets.";
-  return "he saw the migration once, in a dream.";
-}
-function fmtAge(mins){ return mins<60 ? mins+" min" : (mins/60).toFixed(1)+" h"; }
-function hhmm(d){ return d.getHours().toString().padStart(2,"0")+":"+d.getMinutes().toString().padStart(2,"0"); }
-
-/* ── цветы ── */
-var FK="morgue_flowers";
-function flowers(){ try{ return JSON.parse(localStorage.getItem(FK)||"{}"); }catch(e){ return {}; } }
-function layFlower(id, el){
-  var f=flowers(); f[id]=(f[id]||0)+1;
-  try{ localStorage.setItem(FK, JSON.stringify(f)); }catch(e){}
-  el.classList.add("laid");
-  el.innerHTML = "🥀<span class='fcount'>"+f[id]+"</span>";
-  document.getElementById("l-flowers").textContent = Object.values(f).reduce(function(a,b){return a+b;},0);
-}
-
-/* ── надгробие ── */
-function stone(t){
-  var d=document.createElement("div"); d.className="plot";
-  var born=new Date(t.born), died=new Date(t.born+t.mins*60000);
-  var f=flowers()[t.id]||0;
-  d.innerHTML =
-    '<div class="stone">'+
-      '<div class="flowers'+(f?" laid":"")+'" title="lay flowers">'+(f?"🥀<span class=\'fcount\'>"+f+"</span>":"🥀")+'</div>'+
-      '<div class="cross">✝</div>'+
-      '<div class="tick">$'+(t.sym||"?").slice(0,12)+'</div>'+
-      '<div class="dates">'+hhmm(born)+' — '+hhmm(died)+'</div>'+
-      '<div class="lived">lived '+fmtAge(t.mins)+' · '+(t.holderCount||0)+' holders</div>'+
-      '<div class="epi">'+epitaph(t)+'</div>'+
-    '</div><div class="dirt"></div><div class="grass"></div>';
-  d.querySelector(".flowers").onclick=function(){ layFlower(t.id, this); };
-  return d;
-}
-
-/* ── живые данные ── */
-function norm(c){
-  var fp=(c.firstPool||{}).createdAt;
-  var born=fp?Date.parse(fp):Date.now();
-  var st=c.stats24h||{};
-  var vol=(st.buyVolume||0)+(st.sellVolume||0);
-  return {id:c.id||c.symbol, sym:c.symbol, born:born,
-          mins:Math.max(1,Math.round((Date.now()-born)/60000)),
-          holderCount:c.holderCount||0, mcap:c.mcap||0, vol:vol, liq:c.liquidity||0};
-}
-/* 🔴 поток Jupiter recent отдаёт монеты возрастом 1-3 минуты - порог «от 4 минут»
-   обнулял кладбище. Мёртвой считаем по СОСТОЯНИЮ, а не по возрасту: капа не ушла
-   от стартовой, холдеров горстка, оборота почти нет. */
-function isDead(t){
-  return t.mcap < 12000 && (t.holderCount <= 8 || t.vol < 1500);
-}
-
-async function loadGraves(){
-  try{
-    var r=await fetch("https://lite-api.jup.ag/tokens/v2/recent");
-    var j=await r.json();
-    var list=(Array.isArray(j)?j:(j.tokens||[])).map(norm);
-    var dead=list.filter(isDead).sort(function(a,b){ return b.born-a.born; }).slice(0,12);
-    var alive=list.length-dead.length;
-    var g=document.getElementById("plots"); g.innerHTML="";
-    dead.forEach(function(t,i){ var s=stone(t); s.style.animationDelay=(i*45)+"ms"; g.appendChild(s); });
-    document.getElementById("l-buried").textContent=String(dead.length);
-    document.getElementById("l-alive").textContent=String(alive);
-    var f=flowers();
-    document.getElementById("l-flowers").textContent=Object.values(f).reduce(function(a,b){return a+b;},0);
-    keeperLine(dead);
-  }catch(e){
-    document.getElementById("plots").innerHTML=
-      '<p class="note" style="grid-column:1/-1">The chain is not answering. The dead are patient, try again in a moment.</p>';
-  }
-}
-
-/* ── смотритель ── */
-var LINES=[
-  "Mind the fresh soil. We buried thirty-nine thousand of them yesterday and the ground has not settled.",
-  "That one over there lasted {m} minutes. A good innings, by local standards.",
-  "They all arrive certain they are different. They are laid out in rows, same as everyone.",
-  "You are looking for one in particular. They always are.",
-  "Nobody visits section A twice. The stones change too quickly.",
-  "The dev came by earlier. He did not stay for the service."
+/* ══ кабинеты ══ */
+var ROOMS = [
+  { id:"intake", no:"Room 101", doc:"Dr. Toly", spec:"Intake · General Practice", ava:"🩺",
+    say:"Take a seat. What brings you in today?",
+    kind:"choice",
+    opts:[
+      ["I can't stop checking charts","compulsive chart surveillance"],
+      ["I bought something at 4am","nocturnal acquisition disorder"],
+      ["My friend told me to come","denial, stage two"],
+      ["I'm here for the free stuff","incurable"]
+    ]},
+  { id:"reflex", no:"Room 202", doc:"Dr. Sniper", spec:"Reflex Testing · Neurology", ava:"⚡",
+    say:"Bots enter a coin in about 2 seconds. Let us see how you compare. Click the square the moment it turns green.",
+    kind:"reflex" },
+  { id:"vision", no:"Room 303", doc:"Dr. Whitepaper", spec:"Ophthalmology", ava:"👁",
+    say:"Read the chart. Stop when you cannot. Most patients stop before the line that matters.",
+    kind:"vision" },
+  { id:"blood", no:"Room 404", doc:"Dr. Chain", spec:"Laboratory · Blood Work", ava:"🧪",
+    say:"Give me a wallet address. Any wallet. I will read it like blood work, live from the chain.",
+    kind:"blood" },
+  { id:"psych", no:"Room 505", doc:"Dr. Jeet", spec:"Psychiatry", ava:"🧠",
+    say:"Three questions. There are no wrong answers, only diagnoses.",
+    kind:"psych" }
 ];
-function keeperLine(dead){
-  var l=LINES[Math.floor(Math.random()*LINES.length)];
-  if(dead && dead.length) l=l.replace("{m}", dead[0].mins);
-  else l=l.replace("{m}","nine");
-  document.getElementById("keeper").textContent=l;
-}
-setInterval(function(){ keeperLine(null); }, 14000);
 
-/* ── поиск ── */
-document.getElementById("dig").onclick=dig;
-document.getElementById("q").addEventListener("keydown",function(e){ if(e.key==="Enter") dig(); });
-async function dig(){
-  var q=document.getElementById("q").value.trim().replace(/^\$/,"");
-  var msg=document.getElementById("msg"), out=document.getElementById("found");
-  out.innerHTML=""; if(!q){ msg.textContent="Give me a name to look for."; return; }
-  msg.textContent="digging…";
-  try{
-    var r=await fetch("https://lite-api.jup.ag/tokens/v2/search?query="+encodeURIComponent(q));
-    var j=await r.json();
-    var list=(Array.isArray(j)?j:(j.tokens||[])).map(norm)
-      .filter(function(t){ return (t.sym||"").toUpperCase()===q.toUpperCase(); });
-    if(!list.length){ msg.textContent="No such body here. It may still be alive, which is worse."; return; }
-    var dead=list.filter(isDead);
-    if(!dead.length){
-      var best=list.sort(function(a,b){ return b.mcap-a.mcap; })[0];
-      msg.textContent="$"+best.sym+" is still breathing. "+(best.holderCount||0)+" holders, $"+Math.round(best.mcap).toLocaleString()+" market cap. Come back later.";
+/* ══ коридор ══ */
+function renderHall(){
+  var h=document.getElementById("hall"); h.innerHTML="";
+  ROOMS.forEach(function(r){
+    var done=!!st.results[r.id];
+    var d=document.createElement("button");
+    d.className="door"+(done?" done":"");
+    d.innerHTML='<span class="st">'+(done?"seen":"waiting")+'</span>'+
+      '<div class="no">'+r.no.toUpperCase()+'</div>'+
+      '<div class="nm">'+r.doc+'</div>'+
+      '<div class="dc">'+r.spec+'</div>';
+    d.onclick=function(){ enterRoom(r); };
+    h.appendChild(d);
+  });
+  var done=Object.keys(st.results).length;
+  document.getElementById("fill").style.width=Math.round(done/ROOMS.length*100)+"%";
+  document.getElementById("discharge").disabled = done<ROOMS.length;
+  document.getElementById("patline").textContent =
+    "patient #"+String(st.num).padStart(4,"0")+(st.handle?" · @"+st.handle.replace(/^@/,""):"")+
+    " · "+done+" of "+ROOMS.length+" seen";
+}
+
+/* ══ вход в кабинет ══ */
+function enterRoom(r){
+  document.getElementById("r-no").textContent=r.no;
+  document.getElementById("r-doc").textContent=r.doc;
+  document.getElementById("r-spec").textContent=r.spec;
+  document.getElementById("r-ava").textContent=r.ava;
+  document.getElementById("r-say").textContent=r.say;
+  var b=document.getElementById("r-body"); b.innerHTML="";
+  if(r.kind==="choice") buildChoice(r,b);
+  if(r.kind==="reflex") buildReflex(r,b);
+  if(r.kind==="vision") buildVision(r,b);
+  if(r.kind==="blood")  buildBlood(r,b);
+  if(r.kind==="psych")  buildPsych(r,b);
+  show("s-room");
+}
+function finish(r, label, note){
+  st.results[r.id]={label:label, note:note||""}; save();
+  var b=document.getElementById("r-body");
+  b.innerHTML='<div class="say" style="border-left-color:var(--warn);margin-top:18px"><b>Noted in your chart:</b><br>'+
+    label+(note?'<br><span style="color:var(--dim);font-size:14px">'+note+'</span>':'')+'</div>'+
+    '<button class="b1" style="width:100%" onclick="document.getElementById(\'back\').click()">Back to corridor</button>';
+}
+
+/* ── 101 выбор ── */
+function buildChoice(r,b){
+  var w=document.createElement("div"); w.className="opts";
+  r.opts.forEach(function(o){
+    var x=document.createElement("button"); x.className="opt"; x.textContent=o[0];
+    x.onclick=function(){ finish(r, o[1]); };
+    w.appendChild(x);
+  });
+  b.appendChild(w);
+}
+
+/* ── 202 рефлексы ── */
+function buildReflex(r,b){
+  var d=document.createElement("div"); d.className="reflex idle"; d.textContent="CLICK TO ARM";
+  b.appendChild(d);
+  var state="idle", t0=0, timer=null;
+  d.onclick=function(){
+    if(state==="idle"){
+      state="wait"; d.className="reflex wait"; d.textContent="WAIT FOR GREEN…";
+      timer=setTimeout(function(){
+        state="go"; d.className="reflex go"; d.textContent="NOW"; t0=performance.now();
+      }, 1200+Math.random()*2600);
+    } else if(state==="wait"){
+      clearTimeout(timer); state="idle"; d.className="reflex idle"; d.textContent="TOO EARLY · CLICK TO ARM";
+      finish(r,"jumped the gun","bought before the chart even loaded. classic.");
+    } else if(state==="go"){
+      var ms=Math.round(performance.now()-t0); state="idle";
+      d.className="reflex idle"; d.textContent=ms+" ms";
+      var bots=2000;
+      var note = ms<250 ? "fast for a human. still "+(ms/bots*100).toFixed(1)+"% as fast as the bot that beat you."
+               : ms<400 ? "average. the bots left the coin "+Math.round(bots/ms)+"x ago."
+               : "the sniper entered and exited before you moved.";
+      finish(r, ms+" ms reaction", note);
+    }
+  };
+}
+
+/* ── 303 зрение ── */
+function buildVision(r,b){
+  var lines=[
+    ["18px","THIS IS NOT FINANCIAL ADVICE"],
+    ["15px","THE TEAM MAY SELL AT ANY TIME"],
+    ["12px","LIQUIDITY IS NOT LOCKED"],
+    ["10px","98% OF THESE TOKENS GO TO ZERO"],
+    ["8px","YOU HAVE READ NONE OF THIS BEFORE BUYING"],
+    ["6.5px","AND YOU WILL NOT READ IT NEXT TIME EITHER"]
+  ];
+  var e=document.createElement("div"); e.className="eye";
+  lines.forEach(function(l,i){ e.innerHTML+='<div style="font-size:'+l[0]+'">'+l[1]+'</div>'; });
+  b.appendChild(e);
+  var w=document.createElement("div"); w.className="opts"; w.style.marginTop="16px";
+  ["I read all six lines","I stopped at line four","I did not read any of it"].forEach(function(t,i){
+    var x=document.createElement("button"); x.className="opt"; x.textContent=t;
+    x.onclick=function(){
+      var res = i===0 ? ["20/20 vision","and it changed nothing. you will still buy."]
+              : i===1 ? ["reads the top half","the important line is always the last one."]
+                      : ["legally blind, financially","the most honest answer given in this room."];
+      finish(r,res[0],res[1]);
+    };
+    w.appendChild(x);
+  });
+  b.appendChild(w);
+}
+
+/* ── 404 анализ крови (живые данные) ── */
+function buildBlood(r,b){
+  b.innerHTML='<input id="w" placeholder="wallet address" autocomplete="off" spellcheck="false">'+
+    '<button class="b1" id="draw" style="width:100%;margin-top:12px">DRAW BLOOD</button>'+
+    '<div id="lab" style="margin-top:16px"></div>';
+  document.getElementById("draw").onclick=async function(){
+    var w=document.getElementById("w").value.trim(), lab=document.getElementById("lab");
+    if(w.length<32){ lab.innerHTML='<div class="say">That is not a wallet. Nice try.</div>'; return; }
+    lab.innerHTML='<div class="say">drawing…</div>'; this.disabled=true;
+    try{
+      var res=await fetch("https://lite-api.jup.ag/ultra/v1/balances/"+encodeURIComponent(w));
+      var j=await res.json();
+      var keys=Object.keys(j||{});
+      var sol=(j.SOL&&j.SOL.uiAmount)||0;
+      var tokens=keys.filter(function(k){ return k!=="SOL"; });
+      var dust=tokens.filter(function(k){ return (j[k].uiAmount||0)<1000; }).length;
+      var note = tokens.length===0 ? "no tokens at all. either recovered, or the wallet is fresh and this begins today."
+               : dust>=tokens.length*0.6 ? "mostly dust. these are not positions, they are souvenirs."
+               : "still holding things. we will see how that goes.";
+      finish(r, tokens.length+" tokens · "+sol.toFixed(2)+" SOL", note);
+    }catch(e){
+      finish(r,"blood sample rejected","the chain refused. it happens.");
+    }
+  };
+}
+
+/* ── 505 психиатрия ── */
+function buildPsych(r,b){
+  var QS=[
+    ["Do you know what time it is in UTC?",["No idea","Roughly","To the minute"]],
+    ["Have you said the words \"it's not gambling\"?",["Never","Once","Today"]],
+    ["What would you do with a 10x tomorrow?",["Take profit","Take half","Buy more of it"]]
+  ];
+  var i=0, score=0;
+  function step(){
+    if(i>=QS.length){
+      var lab = score<=2 ? "mild · outpatient" : score<=4 ? "moderate · weekly meetings" : "severe · you are the 26.3%";
+      finish(r, lab, "everyone in this room scores the same. that is the finding.");
       return;
     }
-    dead.sort(function(a,b){ return b.born-a.born; });
-    msg.textContent="Found "+dead.length+" of them under that name. Here is the freshest.";
-    out.appendChild(stone(dead[0]));
-  }catch(e){ msg.textContent="The chain is not answering. The dead are patient."; }
+    b.innerHTML='<p style="font-weight:600;margin:0 0 12px">'+(i+1)+'. '+QS[i][0]+'</p><div class="opts" id="o"></div>';
+    var o=document.getElementById("o");
+    QS[i][1].forEach(function(t,k){
+      var x=document.createElement("button"); x.className="opt"; x.textContent=t;
+      x.onclick=function(){ score+=k; i++; step(); };
+      o.appendChild(x);
+    });
+  }
+  step();
 }
 
+/* ══ выписка ══ */
+function renderChart(){
+  var h=st.handle?("@"+st.handle.replace(/^@/,"")):"anonymous";
+  var rows="";
+  ROOMS.forEach(function(r){
+    var v=st.results[r.id];
+    rows+='<div class="row"><span>'+r.no+' · '+r.doc+'</span><b>'+(v?v.label:"—")+'</b></div>';
+  });
+  var verdicts=["DISCHARGED AGAINST MEDICAL ADVICE","PROGNOSIS: POOR. APPETITE: EXCELLENT",
+                "RELEASED INTO THE TRENCHES","CONDITION STABLE, WALLET IS NOT"];
+  var v=verdicts[st.num % verdicts.length];
+  document.getElementById("chart").innerHTML=
+    '<div class="hosp">Solana General Hospital · discharge summary</div>'+
+    '<h4>'+h+'</h4>'+
+    '<div class="pnum">patient #'+String(st.num).padStart(4,"0")+' · '+new Date().toLocaleDateString()+'</div>'+
+    '<hr>'+rows+
+    '<div class="verdict">'+v+'</div>'+
+    '<div class="stamp">NOT<br>CURED</div>';
+}
+
+/* ══ навигация ══ */
+document.getElementById("admit").onclick=function(){
+  st.handle=document.getElementById("handle").value.trim();
+  if(!st.num) st.num=1000+Math.floor(Math.random()*8999);
+  save(); renderHall(); show("s-hall");
+};
+document.getElementById("back").onclick=function(){ renderHall(); show("s-hall"); };
+document.getElementById("discharge").onclick=function(){ renderChart(); show("s-out"); };
+document.getElementById("again").onclick=function(){
+  st.results={}; save(); renderHall(); show("s-hall");
+};
+document.getElementById("share").onclick=function(){
+  var t="I was admitted to Solana General Hospital and discharged as patient #"+String(st.num).padStart(4,"0")+". Diagnosis: not cured. $MORGUE";
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t),"_blank","noopener");
+};
 document.getElementById("copyca").onclick=function(){
   var t=document.getElementById("ca").textContent, b=this;
   var ok=function(){ var o=b.textContent; b.textContent="copied"; setTimeout(function(){ b.textContent=o; },1400); };
   try{ navigator.clipboard.writeText(t).then(ok,ok); }catch(e){ ok(); }
 };
-
-loadGraves(); setInterval(loadGraves, 30000);
+if(st.num){ document.getElementById("handle").value=st.handle; }
+renderHall();
 </script>
